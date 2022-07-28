@@ -1,6 +1,6 @@
 export default async function displayRazorpay() {
   //simple post the node.js server
-  const data = await fetch("http://localhost:5000/razorpay", {
+  const data = await fetch("http://localhost:8000/razorpay", {
     method: "POST",
   }).then((t) => t.json);
   console.log(data);
@@ -26,4 +26,5 @@ export default async function displayRazorpay() {
   const paymentObj = new window.Razorpay(options);
 
   paymentObj.open();
+  console.log(paymentObj.open());
 }

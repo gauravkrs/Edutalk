@@ -3,7 +3,7 @@ const teacherSchema = new Schema({
     ID: String,
     Name: String,
     Email: String,
-    Phone: Number,
+    Phone: String,
     Status: Boolean,
     onCall: Boolean,
     Charge: Number,

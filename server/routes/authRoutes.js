@@ -1,9 +1,8 @@
 const { Router } = require('express')
 const authRouter = Router()
 
-authRouter.get("/", (req, res) => {
-    
+const register = require("../controllers/userController")
 
-})
+authRouter.post("/register", register)
 
 module.exports= authRouter

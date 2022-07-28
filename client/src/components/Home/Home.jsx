@@ -7,7 +7,7 @@ function HomePage() {
     <>
       <Navbar />
       <h1 align="center">
-        Content should be display here I am adding a dummmy image{" "}
+        Content should be display here I am adding a dummy image{" "}
       </h1>
       <div align="center">
         {" "}

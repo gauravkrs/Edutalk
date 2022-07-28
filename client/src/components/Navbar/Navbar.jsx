@@ -40,7 +40,7 @@ function Navbar() {
     navigate("/auth")
   }
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("user")) || [];
+    const data = JSON.parse(localStorage.getItem("token")) || [];
     if (data.length > 0) {
       setLogin(true)
       setUser(data)

@@ -39,9 +39,9 @@ function Details() {
               type: "teacher",
             };
         }
-        axios.post("/", user).then((response) => {
-            console.log(response)
+        axios.post("http://localhost:8000/auth/register", user).then((response) => {
             localStorage.setItem("token", JSON.stringify(data.Token))
+            localStorage.setItem("user", JSON.stringify(response.data.ID));
             alert("Signed in");
         })
     }

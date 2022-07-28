@@ -2,8 +2,31 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
-const AuthRoute = require("./routes/authRoutes");
+const authRouter = require("./routes/authRoutes");
 const paymentRouter = require("./routes/paymentRoutes");
+const chatRouter = require("./routes/chatRoutes");
+const server = require('http').createServer(app);
+const { Server } = require('socket.io')
+var messages = []
+//<---------------------------------------------------------------->//Chat App
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
+io.on("connection", (socket) => {
+  console.log(`User Connected: ${socket.id}`);
+
+  socket.on("send_message", (data) => {
+    messages.push(data)
+    socket.broadcast.emit("receive_message", messages);
+  });
+  socket.emit("receive_message", messages);
+  socket.on("disconnect", () => {
+    console.log("User Disconnected", socket.id);
+  });
+});
 //<---------------------------------------------------------------->
 
 app.use(express.urlencoded({ extended: true }));
@@ -12,8 +35,9 @@ app.use(cors());
 
 //<---------------------------------------------------------------->
 //Add routes here
-app.use("/auth", AuthRoute);
+app.use("/auth", authRouter);
 app.use("/razorpay", paymentRouter);
+app.use("/chat", chatRouter);
 
 //<---------------------------------------------------------------->
 
@@ -23,7 +47,7 @@ const PORT = process.env.PORT || 8000;
 mongoose
   .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() =>
-    app.listen(PORT, () =>
+    server.listen(PORT, () =>
       console.log(`Server Running on Port: http://localhost:${PORT}`)
     )
   )

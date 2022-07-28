@@ -8,7 +8,7 @@ const register = async (req, res) => {
         if (search.length) {
             res.send({ Message: "Account already registered", data: search[0] })
         } else {
-            const data = new UserModel(req.body)
+            const data = new studentModel(req.body)
             data.save((err, success) => {
                 if (err) res.send(err)
                 else {
@@ -22,7 +22,7 @@ const register = async (req, res) => {
         if (search.length) {
             res.send({ Message: "Account already registered", data: search[0] })
         } else {
-            const data = new UserModel(req.body)
+            const data = new teacherModel(req.body)
             data.save((err, success) => {
                 if (err) res.send(err)
                 else {
@@ -30,9 +30,45 @@ const register = async (req, res) => {
                 }
             })
         }
+    } 
+}
+//<------------------------------------------------------------------------------------------------>
+const chat = async (req, res) => { 
+    const teacherID = req.body.teacher
+    const studentID = req.body.student
+    teacherModel.find({ ID: teacherID }).then(resTeacher => {
+        studentModel.find({ ID: studentID }).then(resStudent => {
+            const users = {
+                student: resStudent,
+                teacher: resTeacher
+            }
+            res.send(users)
+        })
+    })
+}
+//<------------------------------------------------------------------------------------------------>
+const user = async (req, res) => {
+    const search = await teacherModel.find({ ID: req.params.id })
+    if (search.length == 0) {
+        const search = await studentModel.find({ ID: req.params.id })
+        res.send(search[0])
+    } else {
+        res.send(search[0])
+    }
+}
+//<------------------------------------------------------------------------------------------------>
+const userByPhone = async (req, res) => {
+    const search1 = await teacherModel.find({ Phone: req.params.id })
+    if (search1.length == 0) {
+        const search2 = await studentModel.find({ Phone: req.params.id })
+        res.send(search2[0])
+        if (search2.length == 0) {
+            res.send({ Message: "Not Registered" })
+        }
+    } else {
+        res.send(search1[0])
     }
     
-    
 }
-
-module.exports= register
+//<------------------------------------------------------------------------------------------------>
+module.exports = { register, chat, user, userByPhone }

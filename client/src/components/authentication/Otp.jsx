@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import styles from "./login.module.css";
+import axios from "axios"
+import {useNavigate} from "react-router-dom"
 function Otp({ setPage }) {
+    const navigate= useNavigate()
     const [otp, setOtp] = useState(0)
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -9,12 +12,36 @@ function Otp({ setPage }) {
         result
             .confirm(otp)
             .then((result) => {
-                const userPreData = {
-                    Token: result._tokenResponse.idToken,
-                    Phone: result.user.phoneNumber
-                };
-                localStorage.setItem("preUser", JSON.stringify(userPreData));
-                setPage("details")
+                console.log(result)
+                axios
+                  .get(`http://localhost:8000/auth/phone/${result.user.phoneNumber}`)
+                    .then((response) => {
+                      console.log(response)
+                    if (response.data.Message === "Not Registered") {
+                      const userPreData = {
+                        Token: result._tokenResponse.idToken,
+                        Phone: result.user.phoneNumber,
+                      };
+                      localStorage.setItem(
+                        "preUser",
+                        JSON.stringify(userPreData)
+                      );
+                      setPage("details");
+                    } else {
+                        //<--------------Logic--------------->
+                        localStorage.setItem(
+                          "token",
+                          JSON.stringify(result._tokenResponse.idToken)
+                        );
+                        localStorage.setItem(
+                          "user",
+                          JSON.stringify(response.data.ID)
+                        );
+                        alert("Signed in");
+                        navigate("/about")
+                    }
+                  });
+                
             })
 }
     return (

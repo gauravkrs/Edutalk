@@ -18,6 +18,12 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
 
+  socket.on("startChat", (data) => {
+    socket.broadcast.emit("chatNotification", data);
+  });
+  socket.on("letsChat", () => {
+    socket.broadcast.emit("chatStarted");
+  });
   socket.on("send_message", (data) => {
     messages.push(data)
     socket.broadcast.emit("receive_message", messages);

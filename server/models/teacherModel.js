@@ -4,12 +4,12 @@ const teacherSchema = new Schema({
     Name: String,
     Email: String,
     Phone: String,
-    Status: Boolean,
-    onCall: Boolean,
-    Charge: Number,
-    Experience: Number,
+    Status: {type: Boolean, default: false},
+    onCall: { type: Boolean, default: false },
+    Charge: { type: Number, default: 10 },
+    Experience: { type: Number, default: 0 },
     About: String,
-    Expertise: String,
+    Expertise: { type: String },
 })
 const teacherModel = model("teacher",teacherSchema)
 

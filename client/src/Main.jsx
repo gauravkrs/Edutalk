@@ -7,6 +7,7 @@ import Chat from "./components/chat/Chat"
 import About from "./components/about/About"
 import Call from "./components/chat/Call"
 import Account from "./components/about/Account"
+import PageNotFound from "./PageNotFound"
 function Main() {
   return (
     <div>
@@ -18,6 +19,7 @@ function Main() {
         <Route path="/call" element={<Call />} />
         <Route path="/about/:id" element={<About />} />
         <Route path="/account" element={<Account />} />
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>
   );

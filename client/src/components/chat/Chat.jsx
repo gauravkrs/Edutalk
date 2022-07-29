@@ -1,21 +1,39 @@
 import React, { useEffect, useState, useRef } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import axios from "axios";
 import { v4 } from "uuid";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import io from "socket.io-client";
 const socket = io.connect("http://localhost:8000");
 //<---------------------------------------------------------------->
 function Chat() {
+  const navigate= useNavigate()
+  const notify = (data) => toast(data);
   const messageRef= useRef(null)
   const params = useParams();
   const [Message, setMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
   const [username, setUsername] = useState("");
   useEffect(() => {
-    const userID = JSON.parse(localStorage.getItem("user"));
+    const userID = JSON.parse(localStorage.getItem("user")) || null
+    if (userID==null) {
+      navigate("/");
+    }
     axios.get(`http://localhost:8000/auth/${userID}`).then((response) => {
+      const chatID = params.id
+      axios.get(`http://localhost:8000/chat/${chatID}`).then((res) => {
+        if (res.data.Message == "No Such Chat Room") {
+          navigate("/");
+        }
+        if (res.data.StudentID == userID || res.data.TeacherID == userID) {
+          notify("Chat Started");
+        } else {
+          navigate("/")
+        }
+      });
       setUsername(response.data.Name);
     });
   }, []);
@@ -44,7 +62,10 @@ function Chat() {
   }, [socket]);
   useEffect(() => {
    messageRef.current.scrollIntoView();
-  },[messageList])
+  }, [messageList])
+  const handleChatEnd = () => {
+    navigate("/account")
+  }
   const left = {
     background: "green",
     color: "white",
@@ -91,6 +112,7 @@ function Chat() {
         textAlign: "center",
       }}
     >
+      <ToastContainer />
       <div>
         <div
           style={{
@@ -100,7 +122,7 @@ function Chat() {
             background: "#f0f0f0",
           }}
         >
-          Live Chat
+          EduTalk Chat
         </div>
       </div>
       <div
@@ -177,6 +199,18 @@ function Chat() {
           &#9658;
         </button>
       </div>
+      <br />
+      <button
+        onClick={()=>handleChatEnd()}
+        style={{
+          width: "50%",
+          color: "white",
+          background: "black",
+          padding: "5px",
+        }}
+      >
+        End Chat
+      </button>
     </div>
   );
 }

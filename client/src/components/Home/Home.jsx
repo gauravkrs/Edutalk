@@ -1,19 +1,14 @@
 import Navbar from "../Navbar/Navbar";
 import ScrollButton from "./ScrollButton";
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import {
-  Flex,
-  Box,
-  Image,
-  Badge,
-  Button,
-  Text,
-} from "@chakra-ui/react";
+import { Flex, Box, Image, Badge, Button, Text } from "@chakra-ui/react";
+import { useNavigate, useParams } from "react-router-dom";
 
 function HomePage() {
-  
   const [getteacherdata, setteacherdata] = useState([]);
+  const navigate = useNavigate();
+
   const getdata = async () => {
     const res = await fetch("http://localhost:8000/", {
       method: "GET",
@@ -40,7 +35,13 @@ function HomePage() {
   return (
     <>
       <Navbar />
-      <Flex display={"flex"} flexWrap={"wrap"} rowGap={"40px"} width={"80%"} margin={"auto"}>
+      <Flex
+        display={"flex"}
+        flexWrap={"wrap"}
+        rowGap={"40px"}
+        width={"80%"}
+        margin={"auto"}
+      >
         {getteacherdata.map((data, index) => (
           <Flex
             display={"flex"}
@@ -61,6 +62,7 @@ function HomePage() {
               />
             </Box>
             <Box width={"59%"}>
+              <Box>{data.id}</Box>
               <Flex
                 justifyContent="space-between"
                 align={"right"}
@@ -89,6 +91,7 @@ function HomePage() {
                       {`₹${data.Charge}`}
                     </Badge>
                   </Box>
+
                   <Button
                     flex={1}
                     color="rgb(102,163,187)"
@@ -98,9 +101,11 @@ function HomePage() {
                     fontSize={"sm"}
                     m={"10px"}
                     marginLeft={"-10px"}
-                    width={"120px"}  
-                    responsive="yes"    
-                           
+                    width={"120px"}
+                    responsive="yes"
+                    onClick={() => {
+                      navigate(`/about/${data.ID}`);
+                    }}
                   >
                     View
                   </Button>

@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const authRouter = require("./routes/authRoutes");
 const paymentRouter = require("./routes/paymentRoutes");
 const chatRouter = require("./routes/chatRoutes");
+const teacher = require("./routes/teacher")
 const server = require('http').createServer(app);
 const { Server } = require('socket.io')
 var messages = []
@@ -38,7 +39,7 @@ app.use(cors());
 app.use("/auth", authRouter);
 app.use("/razorpay", paymentRouter);
 app.use("/chat", chatRouter);
-
+app.use("/",teacher)
 //<---------------------------------------------------------------->
 
 const CONNECTION_URL =

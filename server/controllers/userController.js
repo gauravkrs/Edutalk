@@ -71,5 +71,15 @@ const userByPhone = async (req, res) => {
     }
     
 }
+
+const teacher= async (req,res)=>{
+    try {
+        const teacherdata = await teacherModel.find();
+        res.status(201).json(teacherdata)
+        console.log(teacherdata);
+    } catch (error) {
+        res.status(422).json(error);
+    }
+}
 //<------------------------------------------------------------------------------------------------>
-module.exports = { register, chat, user, userByPhone }
+module.exports = { register, chat, user, userByPhone,teacher }

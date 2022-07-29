@@ -1,6 +1,7 @@
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
 import ScrollButton from "./ScrollButton";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Flex,
   Circle,
@@ -115,6 +116,8 @@ const product = [
   },
 ];
 
+
+
 function Rating({ rating, numReviews }) {
   return (
     <Box display={"flex"}>
@@ -144,6 +147,32 @@ function Rating({ rating, numReviews }) {
 }
 
 function HomePage() {
+  const [getteacherdata, setteacherdata] = useState([]);
+  const getdata = async () => {
+    const res = await fetch("http://localhost:8000/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await res.json();
+    console.log(data);
+
+    if (res.status === 422 || !data) {
+      console.log("error ");
+    } else {
+      setteacherdata(data);
+      console.log("Teacher Data");
+    }
+  };
+
+  useEffect(() => {
+    getdata();
+  }, []);
+
+  
+
   return (
     <>
       <Navbar />
@@ -154,7 +183,7 @@ function HomePage() {
         rowGap={"20px"}
         margin={"auto"}
       >
-        {product.map((data, index) => (
+        {getteacherdata.map((data, index) => (
           <Flex
             display={"flex"}
             margin={"auto"}
@@ -204,12 +233,12 @@ function HomePage() {
                   fontWeight="semibold"
                   as="h4"
                   lineHeight="tight"
-                  isTruncated
+                 
                   
                 >
-                  {data.name}
-                  <Text fontSize="10 px">{data.subject}</Text>
-                  <Text fontSize="10px">{data.languages}</Text>
+                  {data.Name}
+                  <Text fontSize="10 px">{data.Email}</Text>
+                  <Text fontSize="10px">{data.Phone}</Text>
                   <Text fontSize="10px">{data.experiences}</Text>
                   <Button
                     flex={1}

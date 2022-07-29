@@ -59,8 +59,9 @@ function Navbar() {
     }
   }, []);
   return (
-    <div style={{marginBottom: '20px', background:"whitesmoke"}}>
-      <Box px={4}>
+    <div style={{marginBottom: '20px'}}>
+      <Box px={4} bg={useColorModeValue("gray.50", "gray.900")}
+      color={useColorModeValue("gray.700", "gray.200")}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <Box>
             <Image

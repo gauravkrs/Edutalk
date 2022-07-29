@@ -1,9 +1,9 @@
 
 import ScrollButton from "./ScrollButton";
 import React, { useEffect, useState } from "react";
-
+import styles from "./Home.module.css";
 import { Flex, Box, Image, Badge, Button, Text } from "@chakra-ui/react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function HomePage() {
   const [getteacherdata, setteacherdata] = useState([]);
@@ -35,6 +35,7 @@ function HomePage() {
   return (
     <>
       <Flex
+      className={styles.flexBox}
         display={"flex"}
         flexWrap={"wrap"}
         rowGap={"40px"}
@@ -43,6 +44,7 @@ function HomePage() {
       >
         {getteacherdata.map((data, index) => (
           <Flex
+          className={styles.flexBox2}
             display={"flex"}
             margin={"auto"}
             borderWidth="1px"
@@ -92,9 +94,9 @@ function HomePage() {
                   </Box>
 
                   <Button
+                  className={styles.view}
                     flex={1}
                     color="rgb(102,163,187)"
-                    backgroundColor={"white"}
                     border={"2px solid rgb(102,163,187)"}
                     borderRadius={"10px"}
                     fontSize={"sm"}

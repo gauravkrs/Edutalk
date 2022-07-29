@@ -10,3 +10,37 @@
   height: 45px;
   margin-left: 43%;
 }
+@media screen and (min-width: 425px) and (max-width: 630px) {
+  .flexBox{
+    width: auto;
+  }
+  .flexBox2{
+    width: 300px;
+  }
+  
+  
+}
+@media screen and (min-width: 375px) and (max-width: 425px) {
+  
+  .flexBox{
+    width: auto;
+  }
+  .flexBox2{
+    width: 300px;
+  }
+}
+
+@media screen and (min-width: 200px) and (max-width: 375px) {
+  
+  .flexBox{
+    width: auto;
+  }
+  .flexBox2{ 
+    width: 250px;
+  }
+  .view{
+    width: 100px;
+  }
+  
+}
+

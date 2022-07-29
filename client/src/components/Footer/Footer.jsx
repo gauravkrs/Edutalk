@@ -16,15 +16,14 @@ import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 const Logo = (props) => {
   return (
     <Box>
-            <Image
-              rounded={"lg"}
-              height={10}
-              width={20}
-              objectFit={"cover"}
-              src={IMAGE}
-            />
-          </Box>
-     
+      <Image
+        rounded={"full"}
+        objectFit={"cover"}
+        height={10}
+        width={20}
+        src={IMAGE}
+      />
+    </Box>
   );
 };
 
@@ -63,6 +62,7 @@ const ListHeader = ({ children }) => {
 function Footer() {
   return (
     <Box
+    marginTop={"20px"}
       bg={useColorModeValue("gray.50", "gray.900")}
       color={useColorModeValue("gray.700", "gray.200")}
     >
@@ -71,7 +71,7 @@ function Footer() {
           templateColumns={{ sm: "1fr 1fr", md: "2fr 1fr 1fr 2fr" }}
           spacing={8}
         >
-          <Stack spacing={6}>
+          <Stack spacing={6} marginLeft={"30px"}>
             <Box>
               <Logo color={useColorModeValue("gray.700", "white")} />
             </Box>
@@ -79,14 +79,14 @@ function Footer() {
               © 2022 Chakra Templates. All rights reserved
             </Text>
           </Stack>
-          <Stack align={"flex-start"}>
+          <Stack marginLeft={"30px"} align={"flex-start"}>
             <ListHeader>Company</ListHeader>
             <Link href={"#"}>About us</Link>
             <Link href={"#"}>Blog</Link>
             <Link href={"#"}>Contact us</Link>
             <Link href={"#"}>Pricing</Link>
           </Stack>
-          <Stack align={"flex-start"}>
+          <Stack  align={"flex-start"}>
             <ListHeader>Support</ListHeader>
             <Link href={"#"}>Help Center</Link>
             <Link href={"#"}>Terms of Service</Link>
@@ -94,7 +94,7 @@ function Footer() {
             <Link href={"#"}>Privacy Policy</Link>
           </Stack>
 
-          <Stack direction={"row"} spacing={6}>
+          <Stack marginLeft={"50px"} marginTop={"20px"} direction={"row"} spacing={6}>
             <SocialButton label={"Twitter"} href={"#"}>
               <FaTwitter />
             </SocialButton>

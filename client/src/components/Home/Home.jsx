@@ -40,7 +40,7 @@ function HomePage() {
   return (
     <>
       <Navbar />
-      <Flex display={"flex"} flexWrap={"wrap"} width={"80%"} margin={"auto"}>
+      <Flex display={"flex"} flexWrap={"wrap"} rowGap={"40px"} width={"80%"} margin={"auto"}>
         {getteacherdata.map((data, index) => (
           <Flex
             display={"flex"}
@@ -49,7 +49,7 @@ function HomePage() {
             rounded="lg"
             boxShadow="rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px"
             w="45.5%"
-            h="200px"
+            h="210px"
           >
             <Box maxW="sm" width={"50%"} height={"198px"} position="relative">
               <Image
@@ -69,7 +69,7 @@ function HomePage() {
               >
                 <Box
                   m={"20px"}
-                  fontSize="25px"
+                  fontSize="22px"
                   fontWeight="semibold"
                   as="h4"
                   lineHeight="tight"
@@ -96,7 +96,11 @@ function HomePage() {
                     border={"2px solid rgb(102,163,187)"}
                     borderRadius={"10px"}
                     fontSize={"sm"}
-                    width={"120px"}                   
+                    m={"10px"}
+                    marginLeft={"-10px"}
+                    width={"120px"}  
+                    responsive="yes"    
+                           
                   >
                     View
                   </Button>

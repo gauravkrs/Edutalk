@@ -15,7 +15,7 @@ import {
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import axios from "axios"
 
-const Links = ["Dashboard", "Projects", "Team"];
+const Links = ["Dashboard", "Chat", "Vedio-Call"];
 
 const NavLink = ({ children }) => (
   <Link
@@ -60,10 +60,11 @@ function Navbar() {
             <Image
               style={{cursor:"pointer"}}
               onClick={()=>navigate("/")}
-              rounded={"lg"}
+              rounded={"full"}
+             objectFit={"cover"}
               height={10}
-              width={20}                                                                                 
-              objectFit={"cover"}
+              width={20}   
+              marginLeft={"30px"}                                                                              
               src={IMAGE}
             />
           </Box>

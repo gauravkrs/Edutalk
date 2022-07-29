@@ -13,4 +13,13 @@ const chatController = async (req, res) => {
         })
     }
 }
-module.exports = { chatController }
+const chatGet = async (req, res) => {
+    const id = req.params.id
+    const search = await chatModel.find({ ChatID: id })
+    if (search.length > 0) {
+        res.send(search[0])
+    } else {
+        res.send({Message: "No Such Chat Room"})
+    }
+}
+module.exports = { chatController, chatGet }

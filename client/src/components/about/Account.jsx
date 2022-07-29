@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import { CircularProgress } from "@chakra-ui/progress";
+import io from "socket.io-client";
+const socket = io.connect("http://localhost:8000");
+
 function Account() {
   const navigate= useNavigate()
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState("");
   const [type1, setType] = useState(true);
+  const [notification, setNotification] = useState(false);
+  const [caller, setCaller] = useState("")
   const div = {
     display: 'flex',
     alignItems: "center",
     justifyContent: "space-between",
-    width: "40%",
+    width: "100%",
     margin: "20px auto",
     borderBottom: "1px solid gray"
   }
@@ -34,7 +40,21 @@ function Account() {
       }
     });
   }, []);
-  return !type1 ? (
+  useEffect(() => {
+    socket.on("chatNotification", (data) => {
+      setNotification(true);
+      setCaller(data.data);
+    });
+  }, [socket])
+  const handleNotification = async () => {
+    await socket.emit("letsChat")
+    navigate(`/chat/${caller.ChatID}`);
+  }
+  return user == "" ? (
+    <div style={{ width: "10%", margin: "100px auto", textAlign: "center" }}>
+      <CircularProgress isIndeterminate color="#66a3bb" />
+    </div>
+  ) : !type1 ? (
     <div
       style={{
         width: "70%",
@@ -48,25 +68,44 @@ function Account() {
       <h1 style={{ color: "royalblue", fontSize: "30px", padding: "10px" }}>
         {user.Name}
       </h1>
-      <div style={div}>
-        <p style={{ color: "royalblue" }}>Email :</p>
-        <p>{user.Email}</p>
-      </div>
-      <div style={div}>
-        <p style={{ color: "royalblue" }}>Phone :</p>
-        <p>{user.Phone}</p>
-      </div>
-      <div style={div}>
-        <p style={{ color: "royalblue" }}>Charge per Min :</p>
-        <p>{user.Charge}</p>
-      </div>
-      <div style={div}>
-        <p style={{ color: "royalblue" }}>Experience :</p>
-        <p>{user.Experience}</p>
-      </div>
-      <div style={div}>
-        <p style={{ color: "royalblue" }}>Experties :</p>
-        <p>{user.Experties}</p>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-evenly",
+          width: "75%",
+          margin: "auto",
+        }}
+      >
+        <div>
+          <img
+            style={{ borderRadius: "50%", width: "40%" }}
+            src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+            alt="profile-pic"
+          />
+        </div>
+        <div style={{ width: "60%" }}>
+          <div style={div}>
+            <p style={{ color: "royalblue" }}>Email :</p>
+            <p>{user.Email}</p>
+          </div>
+          <div style={div}>
+            <p style={{ color: "royalblue" }}>Phone :</p>
+            <p>{user.Phone}</p>
+          </div>
+          <div style={div}>
+            <p style={{ color: "royalblue" }}>Charge per Min :</p>
+            <p>{user.Charge}</p>
+          </div>
+          <div style={div}>
+            <p style={{ color: "royalblue" }}>Experience :</p>
+            <p>{user.Experience}</p>
+          </div>
+          <div style={div}>
+            <p style={{ color: "royalblue" }}>Experties :</p>
+            <p>{user.Experties}</p>
+          </div>
+        </div>
       </div>
       <br />
       <div
@@ -79,7 +118,23 @@ function Account() {
       >
         {user.About}
       </div>
-      <button onClick={()=>handleLogout()} style={button}>Logout</button>
+      <br />
+      <button onClick={() => handleLogout()} style={button}>
+        Logout
+      </button>
+      {notification && (
+        <button
+          style={{
+            color: "white",
+            background: "green",
+            width: "50%",
+              margin: "auto",
+              padding: "5px",
+            cursor: "pointer"
+          }}
+          onClick={() => handleNotification()}
+        >{`${caller.StudentName} is calling`}</button>
+      )}
     </div>
   ) : (
     <div
@@ -92,7 +147,50 @@ function Account() {
         boxShadow:
           "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset",
       }}
-    ></div>
+    >
+      <h1 style={{ color: "royalblue", fontSize: "30px", padding: "10px" }}>
+        {user.Name}
+      </h1>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-evenly",
+          width: "75%",
+          margin: "auto",
+        }}
+      >
+        <div>
+          <img
+            style={{ borderRadius: "50%", width: "50%" }}
+            src="https://aux.iconspalace.com/uploads/12858963141256781998.png"
+            alt="profile-pic"
+          />
+        </div>
+        <div style={{ width: "60%" }}>
+          <div style={div}>
+            <p style={{ color: "royalblue" }}>Email :</p>
+            <p>{user.Email}</p>
+          </div>
+          <div style={div}>
+            <p style={{ color: "royalblue" }}>Phone :</p>
+            <p>+{user.Phone}</p>
+          </div>
+          <div style={div}>
+            <p style={{ color: "royalblue" }}>Wallet :</p>
+            <p>{user.Wallet}</p>
+          </div>
+          <div style={div}>
+            <p style={{ color: "royalblue" }}>Academics :</p>
+            <p>{user.Academics}</p>
+          </div>
+        </div>
+      </div>
+      <br />
+      <button onClick={() => handleLogout()} style={button}>
+        Logout
+      </button>
+    </div>
   );
 }
 

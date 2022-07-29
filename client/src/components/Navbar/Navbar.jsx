@@ -58,6 +58,8 @@ function Navbar() {
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <Box>
             <Image
+              style={{cursor:"pointer"}}
+              onClick={()=>navigate("/")}
               rounded={"lg"}
               height={10}
               width={20}

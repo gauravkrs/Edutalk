@@ -11,7 +11,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { BsStar, BsStarFill, BsStarHalf } from "react-icons/bs";
-import { FiShoppingCart } from "react-icons/fi";
+
 
 const product = [
   {
@@ -205,6 +205,7 @@ function HomePage() {
                   as="h4"
                   lineHeight="tight"
                   isTruncated
+                  
                 >
                   {data.name}
                   <Text fontSize="10 px">{data.subject}</Text>
@@ -220,8 +221,9 @@ function HomePage() {
                     _focus={{
                       bg: "gray.200",
                     }}
+                    marginLeft={"95%"}   
                   >
-                    Chat
+                    view
                   </Button>
                 </Box>
               </Flex>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Teacher from "./components/About/Teacher";
+// import Teacher from "./components/About/Teacher";
 // import Login from "./components/authentication/Login"
 import HomePage from "./components/Home/Home";
 function Main() {

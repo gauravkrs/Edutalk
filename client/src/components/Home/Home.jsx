@@ -14,7 +14,7 @@ import {
 import { BsStar, BsStarFill, BsStarHalf } from "react-icons/bs";
 
 
-const product = [
+const teacher = [
   {
     isNew: true,
     imageURL:
@@ -183,7 +183,7 @@ function HomePage() {
         rowGap={"20px"}
         margin={"auto"}
       >
-        {getteacherdata.map((data, index) => (
+        {teacher.map((data, index) => (
           <Flex
             display={"flex"}
             margin={"auto"}
@@ -236,9 +236,9 @@ function HomePage() {
                  
                   
                 >
-                  {data.Name}
-                  <Text fontSize="10 px">{data.Email}</Text>
-                  <Text fontSize="10px">{data.Phone}</Text>
+                  {data.name}
+                  <Text fontSize="10 px">{data.subject}</Text>
+                  <Text fontSize="10px">{data.languages}</Text>
                   <Text fontSize="10px">{data.experiences}</Text>
                   <Button
                     flex={1}

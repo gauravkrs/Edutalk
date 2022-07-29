@@ -6,11 +6,11 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom'
 function App() {
   const params = useLocation()
-  const [visible, setVisible] = useState(true)
+  const [visible, setVisible] = useState(false)
   useEffect(() => {
-    if (params.pathname == "/auth") {
-      setVisible(false)
-    } else setVisible(true)
+    if (params.pathname == "/" || params.pathname == "/payment") {
+      setVisible(true)
+    } else setVisible(false)
   }, [params])
   return (
     <div className="App">

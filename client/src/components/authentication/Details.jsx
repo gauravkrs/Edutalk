@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import styles from "./login.module.css";
 import { v4 } from "uuid"
 import axios from "axios"
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function Details() {
     const [type, setType] = useState(true)
     const [name, setName] = useState("")
@@ -10,11 +13,15 @@ function Details() {
     const [about, setAbout] = useState("")
     const [experience, setExperience] = useState(0)
     const [expertise, setExpertise] = useState("")
-    const [charge, setCharge] = useState(0)
+  const [charge, setCharge] = useState(0)
+  
+  const notify = () => toast("Signed In Successfully");
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const data = JSON.parse(localStorage.getItem("preUser"))
-        //localStorage.removeItem("preUser")
+        localStorage.removeItem("preUser")
         var user={}
         if (type) {
             user = {
@@ -32,25 +39,26 @@ function Details() {
               Name: name,
               Email: email,
               Phone: data.Phone,
-                Charge: charge,
+              Charge: charge,
               Experience: experience,
-                About: about,
+              About: about,
               Expertise: expertise,
               type: "teacher",
             };
         }
+      console.log(user)
         axios.post("http://localhost:8000/auth/register", user).then((response) => {
             localStorage.setItem("token", JSON.stringify(data.Token))
             localStorage.setItem("user", JSON.stringify(response.data.ID));
-            alert("Signed in");
+            notify()
         })
     }
     return (
       <div className={styles.innerDiv}>
         <h1 style={{ color: "royalblue", fontSize: "25px" }}>
-          Who You Are :
-            </h1>
-            <br />
+          New user? Help us know you better :
+        </h1>
+        <br />
         <button onClick={() => setType(!type)} className={styles.type}>
           {type ? "Student" : "Teacher"}
         </button>
@@ -107,6 +115,7 @@ function Details() {
             <br />
             <br />
             <input className={styles.button} type="submit" value="Let's Go" />
+            <ToastContainer />
           </form>
         ) : (
           <form onSubmit={(e) => handleSubmit(e)}>
@@ -135,6 +144,7 @@ function Details() {
             <br />
             <br />
             <input className={styles.button} type="submit" value="Let's Go" />
+            <ToastContainer />
           </form>
         )}
       </div>

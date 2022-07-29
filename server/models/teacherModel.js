@@ -7,9 +7,9 @@ const teacherSchema = new Schema({
     Status: Boolean,
     onCall: Boolean,
     Charge: Number,
-    Experiences: Number,
+    Experience: Number,
     About: String,
-    Experties: String,
+    Expertise: String,
 })
 const teacherModel = model("teacher",teacherSchema)
 

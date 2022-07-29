@@ -13,6 +13,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import axios from "axios"
 
 const Links = ["Dashboard", "Projects", "Team"];
 
@@ -35,17 +36,22 @@ function Navbar() {
   const navigate= useNavigate()
   const { colorMode, toggleColorMode } = useColorMode();
   const [login, setLogin] = useState(false)
-  const [user,setUser] = useState([])
+  const [user,setUser] = useState({})
   const handleSignup = () => {
-    navigate("/auth")
+    if (login) {
+      navigate("/account")
+    }
+    else navigate("/auth")
   }
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("token")) || [];
-    if (data.length > 0) {
-      setLogin(true)
-      setUser(data)
+    const data = JSON.parse(localStorage.getItem("user")) || null;
+    if (data) {
+      axios.get(`http://localhost:8000/auth/${data}`).then((response) => {
+        setLogin(true);
+        setUser({Name: response.data.Name});
+      })
     }
-  }, [handleSignup]);
+  }, []);
   return (
     <>
       <Box px={4}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -8,6 +8,7 @@ import io from "socket.io-client";
 const socket = io.connect("http://localhost:8000");
 //<---------------------------------------------------------------->
 function Chat() {
+  const messageRef= useRef(null)
   const params = useParams();
   const [Message, setMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
@@ -37,12 +38,13 @@ function Chat() {
   };
 
   useEffect(() => {
-    console.log(true);
     socket.on("receive_message", (data) => {
       setMessageList(data);
     });
   }, [socket]);
-
+  useEffect(() => {
+   messageRef.current.scrollIntoView();
+  },[messageList])
   const left = {
     background: "green",
     color: "white",
@@ -147,16 +149,21 @@ function Chat() {
               );
             })}
           </ScrollToBottom>
+          <div ref={messageRef}></div>
         </div>
       </div>
       <div>
         <input
           style={{
+            background: "whitesmoke",
+            color: "gray",
             width: "80%",
             height: "50px",
-            padding: "10px 0px",
+            padding: "10px 20px",
+            borderRadius: "20px",
             outline: "none",
-            borderBottom: "1px solid gray",
+            borderBottom: "3px solid royalblue",
+            borderLeft: "3px solid green",
           }}
           type="text"
           value={Message}
@@ -166,10 +173,11 @@ function Chat() {
             event.key === "Enter" && sendMessage();
           }}
         />
-        <button onClick={() => sendMessage()}>&#9658;</button>
+        <button style={{ color: "gray" }} onClick={() => sendMessage()}>
+          &#9658;
+        </button>
       </div>
     </div>
-    
   );
 }
 

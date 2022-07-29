@@ -6,6 +6,7 @@ import { Payment } from "./components/Payment/Payment"
 import Chat from "./components/chat/Chat"
 import About from "./components/about/About"
 import Call from "./components/chat/Call"
+import Account from "./components/about/Account"
 function Main() {
   return (
     <div>
@@ -16,6 +17,7 @@ function Main() {
         <Route path="/chat/:id" element={<Chat />} />
         <Route path="/call" element={<Call />} />
         <Route path="/about/:id" element={<About />} />
+        <Route path="/account" element={<Account />} />
       </Routes>
     </div>
   );

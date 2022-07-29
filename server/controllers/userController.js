@@ -61,9 +61,10 @@ const userByPhone = async (req, res) => {
     const search1 = await teacherModel.find({ Phone: req.params.id })
     if (search1.length == 0) {
         const search2 = await studentModel.find({ Phone: req.params.id })
-        res.send(search2[0])
         if (search2.length == 0) {
-            res.send({ Message: "Not Registered" })
+            res.send({Message: 'Not registered'})
+        } else {
+            res.send(search2[0])
         }
     } else {
         res.send(search1[0])

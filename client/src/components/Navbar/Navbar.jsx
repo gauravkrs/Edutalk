@@ -15,7 +15,7 @@ import {
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import axios from "axios"
 
-const Links = ["Dashboard", "Chat", "Vedio-Call"];
+const Links = ["Dashboard", "Chat", "Video-Call"];
 
 const NavLink = ({ children }) => (
   <Link

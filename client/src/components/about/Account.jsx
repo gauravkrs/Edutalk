@@ -27,7 +27,6 @@ function Account() {
     padding: "5px",
   };
   const handleLogout = async () => {
-    await axios.put("/");
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     navigate("/auth");

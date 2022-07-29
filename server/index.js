@@ -23,6 +23,7 @@ io.on("connection", (socket) => {
   
   socket.on("close_chat", () => {
     socket.broadcast.emit("chatClosed")
+    socket.broadcast.emit("videoClosed")
   })
   //<---------------------------------------------------------------->//chat
   socket.on("startChat", (data) => {
@@ -40,19 +41,13 @@ io.on("connection", (socket) => {
     console.log("User Disconnected", socket.id);
   });
   //------------------------------------------for video
-  if (!users[socket.id]) {
-    users[socket.id] = socket.id;
-  }
   socket.emit("yourID", socket.id);
   io.sockets.emit("allUsers", users);
-  socket.on('disconnect', () => {
-    delete users[socket.id];
-  })
+  
 
 
   socket.on("callUser", (data) => {
     socket.broadcast.emit("callUser", data);
-    io.to(data.userToCall).emit('hey', {signal: data.signalData, from: data.from});
   });
   socket.on("acceptCall", (data) => {
     io.to(data.to).emit('callAccepted', data.signal);

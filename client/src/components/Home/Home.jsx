@@ -1,9 +1,9 @@
 import Navbar from "../Navbar/Navbar";
 import ScrollButton from "./ScrollButton";
-import React, { useEffect, useState } from "react";
+import React, { useEffect,useState } from "react";
+
 import {
   Flex,
-  Circle,
   Box,
   Image,
   Badge,
@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 
 function HomePage() {
+  
   const [getteacherdata, setteacherdata] = useState([]);
   const getdata = async () => {
     const res = await fetch("http://localhost:8000/", {
@@ -95,7 +96,7 @@ function HomePage() {
                     border={"2px solid rgb(102,163,187)"}
                     borderRadius={"10px"}
                     fontSize={"sm"}
-                    width={"120px"}
+                    width={"120px"}                   
                   >
                     View
                   </Button>

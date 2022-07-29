@@ -62,7 +62,7 @@ function Navbar() {
               onClick={()=>navigate("/")}
               rounded={"lg"}
               height={10}
-              width={20}
+              width={20}                                                                                 
               objectFit={"cover"}
               src={IMAGE}
             />

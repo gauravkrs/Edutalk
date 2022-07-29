@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Login from "./components/authentication/Login"
+// import Teacher from "./components/About/Teacher";
+// import Login from "./components/authentication/Login"
 import HomePage from "./components/Home/Home";
 import { Payment } from "./components/Payment/Payment"
 import Chat from "./components/chat/Chat"

@@ -5,10 +5,11 @@ const mongoose = require("mongoose");
 const authRouter = require("./routes/authRoutes");
 const paymentRouter = require("./routes/paymentRoutes");
 const chatRouter = require("./routes/chatRoutes");
-const teacher = require("./routes/teacher")
-const server = require('http').createServer(app);
-const { Server } = require('socket.io')
-var messages = []
+const videoRouter = require("./routes/videoRoutes");
+const teacher = require("./routes/teacher");
+const server = require("http").createServer(app);
+const { Server } = require("socket.io");
+var messages = [];
 //<---------------------------------------------------------------->//Chat App
 const io = new Server(server, {
   cors: {
@@ -30,15 +31,22 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("chatStarted");
   });
   socket.on("send_message", (data) => {
-    messages.push(data)
+    messages.push(data);
     socket.broadcast.emit("receive_message", messages);
   });
   //<---------------------------------------------------------------->//video
   socket.on("disconnect", () => {
     console.log("User Disconnected", socket.id);
   });
+  //------------------------------------------for video
+  socket.on("callUser", (data) => {
+    socket.broadcast.emit("callUser", data);
+  });
+
+  socket.on("answerCall", () => {
+    socket.broadcast.emit("callAccepted");
+  });
 });
-//<---------------------------------------------------------------->
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -49,7 +57,8 @@ app.use(cors());
 app.use("/auth", authRouter);
 app.use("/razorpay", paymentRouter);
 app.use("/chat", chatRouter);
-app.use("/",teacher)
+app.use("/video", videoRouter);
+app.use("/", teacher);
 //<---------------------------------------------------------------->
 
 const CONNECTION_URL =

@@ -1,5 +1,6 @@
 
 import Main from './Main'
+import Navbar from './components/Navbar/Navbar'
 import Footer from "./components/Footer/Footer";
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom'
@@ -13,6 +14,7 @@ function App() {
   }, [params])
   return (
     <div className="App">
+      <Navbar/>
       <Main />
       {visible && <Footer />}
     </div>

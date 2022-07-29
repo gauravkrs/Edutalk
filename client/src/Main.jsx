@@ -9,8 +9,7 @@ function Main() {
       <Routes>
         {/* <Route path="/" element={<Login/>}/> */}
         <Route path="/" element={<HomePage />} />
-        <Route path="/about" element={<Teacher />} />
-      </Routes>
+      </Routes> 
     </div>
   );
 }

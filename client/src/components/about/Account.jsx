@@ -1,55 +1,65 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import { CircularProgress } from "@chakra-ui/progress";
 import io from "socket.io-client";
 const socket = io.connect("http://localhost:8000");
 
 function Account() {
-  const navigate= useNavigate()
+  const navigate = useNavigate();
   const [user, setUser] = useState("");
   const [type1, setType] = useState(true);
   const [notification, setNotification] = useState(false);
-  const [caller, setCaller] = useState("")
+  const [videoNotificatioin, setVideoNotification] = useState(false);
+  const [caller, setCaller] = useState("");
   const div = {
-    display: 'flex',
+    display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
     width: "100%",
     margin: "20px auto",
-    borderBottom: "1px solid gray"
-  }
+    borderBottom: "1px solid gray",
+  };
   const button = {
     width: "50%",
     color: "white",
     background: "black",
-    padding:"5px"
-  }
+    padding: "5px",
+  };
   const handleLogout = async () => {
-    await axios.put("/")
-    localStorage.removeItem("token")
-    localStorage.removeItem("user")
-    navigate("/auth")
-  }
+    await axios.put("/");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/auth");
+  };
   useEffect(() => {
     const id = JSON.parse(localStorage.getItem("user"));
     axios.get(`http://localhost:8000/auth/${id}`).then((response) => {
       setUser(response.data);
       if (response.data.Charge) {
-        setType(false)
+        setType(false);
       }
     });
   }, []);
   useEffect(() => {
+    socket.on("callUser", (data) => {
+      setVideoNotification(true);
+      setCaller(data.data);
+    });
     socket.on("chatNotification", (data) => {
       setNotification(true);
       setCaller(data.data);
     });
-  }, [socket])
-  const handleNotification = async () => {
-    await socket.emit("letsChat")
-    navigate(`/chat/${caller.ChatID}`);
-  }
+  }, [socket]);
+  const handleNotification = async (type) => {
+    if (type === "chat") {
+      await socket.emit("letsChat");
+      navigate(`/chat/${caller.ChatID}`);
+    } else {
+      await socket.emit("answerCall");
+      navigate(`/call/${caller.ChatID}`);
+    }
+  };
   return user == "" ? (
     <div style={{ width: "10%", margin: "100px auto", textAlign: "center" }}>
       <CircularProgress isIndeterminate color="#66a3bb" />
@@ -122,18 +132,31 @@ function Account() {
       <button onClick={() => handleLogout()} style={button}>
         Logout
       </button>
+      {videoNotificatioin && (
+        <button
+          style={{
+            color: "white",
+            background: "green",
+            width: "50%",
+            margin: "auto",
+            padding: "5px",
+            cursor: "pointer",
+          }}
+          onClick={() => handleNotification("call")}
+        >{`${caller.StudentName} is calling`}</button>
+      )}
       {notification && (
         <button
           style={{
             color: "white",
             background: "green",
             width: "50%",
-              margin: "auto",
-              padding: "5px",
-            cursor: "pointer"
+            margin: "auto",
+            padding: "5px",
+            cursor: "pointer",
           }}
-          onClick={() => handleNotification()}
-        >{`${caller.StudentName} is calling`}</button>
+          onClick={() => handleNotification("chat")}
+        >{`${caller.StudentName} want to chat`}</button>
       )}
     </div>
   ) : (

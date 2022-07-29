@@ -1,46 +1,80 @@
-import React,{ useState, useEffect,useRef} from 'react'
-import { useNavigate, useParams } from "react-router-dom"
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { CircularProgress } from "@chakra-ui/progress";
-import axios from "axios"
-import { v4 } from "uuid"
+import axios from "axios";
+import { v4 } from "uuid";
 import io from "socket.io-client";
 const socket = io.connect("http://localhost:8000");
 
 function About() {
-  var url = useRef()
+  var url = useRef();
   const [user, setUser] = useState("");
-  const [chatloading, setChatLoading] = useState(false)
-    const navigate = useNavigate()
-    const params = useParams()
-    const handleChat = () => {
-        const studentID  = JSON.parse(localStorage.getItem("user"))
-        const userID = {
-            teacher: params.id,
-            student: studentID
-        }
-        axios.post("http://localhost:8000/auth/chat", userID).then((response) => {
-            const chatID = v4()
-            const user = {
-                ChatID: chatID,
-                StudentID: response.data.student[0].ID,
-                TeacherID: response.data.teacher[0].ID,
-                StudentName: response.data.student[0].Name,
-                TeacherName: response.data.teacher[0].Name
-            }
-            
-          axios.post(`http://localhost:8000/chat/${chatID}`, user).then(async (res) => {
-              url.current = res.data.ChatID
-              await socket.emit("startChat", res);
-              setChatLoading(true)
-             })
-        })
-    }
+  const [chatloading, setChatLoading] = useState(false);
+  const [videoLoading, setVideoLoading] = useState(false);
+  const navigate = useNavigate();
+  const params = useParams();
+  const handleChat = () => {
+    const studentID = JSON.parse(localStorage.getItem("user"));
+    const userID = {
+      teacher: params.id,
+      student: studentID,
+    };
+    axios.post("http://localhost:8000/auth/chat", userID).then((response) => {
+      const chatID = v4();
+      const user = {
+        ChatID: chatID,
+        StudentID: response.data.student[0].ID,
+        TeacherID: response.data.teacher[0].ID,
+        StudentName: response.data.student[0].Name,
+        TeacherName: response.data.teacher[0].Name,
+      };
+
+      axios
+        .post(`http://localhost:8000/chat/${chatID}`, user)
+        .then(async (res) => {
+          url.current = res.data.ChatID;
+          await socket.emit("startChat", res);
+          setChatLoading(true);
+        });
+    });
+  };
+  //<--------------------------------------videocall
+  const handleCall = () => {
+    const studentID = JSON.parse(localStorage.getItem("user"));
+    const userID = {
+      teacher: params.id,
+      student: studentID,
+    };
+    axios.post("http://localhost:8000/auth/chat", userID).then((response) => {
+      console.log(response);
+      const chatID = v4();
+      const user = {
+        ChatID: chatID,
+        StudentID: response.data.student[0].ID,
+        TeacherID: response.data.teacher[0].ID,
+        StudentName: response.data.student[0].Name,
+        TeacherName: response.data.teacher[0].Name,
+      };
+
+      axios
+        .post(`http://localhost:8000/video/${chatID}`, user)
+        .then(async (res) => {
+          url.current = res.data.ChatID;
+          await socket.emit("callUser", res);
+          setVideoLoading(true);
+        });
+    });
+  };
   useEffect(() => {
     socket.on("chatStarted", () => {
-      setChatLoading(false)
+      setChatLoading(false);
       navigate(`/chat/${url.current}`);
-    })
-  },[socket])
+    });
+    socket.on("callAccepted", () => {
+      setVideoLoading(false);
+      navigate(`/call/${url.current}`);
+    });
+  }, [socket]);
   const div = {
     display: "flex",
     alignItems: "center",
@@ -132,8 +166,8 @@ function About() {
           }}
         >
           {chatloading ? (
-              <div>
-                Waiting
+            <div>
+              Waiting
               <CircularProgress isIndeterminate color="green.300" />
             </div>
           ) : (
@@ -141,13 +175,20 @@ function About() {
               Chat
             </button>
           )}
-          <button style={button} onClick={() => navigate("/call")}>
-            Video Call
-          </button>
+          {videoLoading ? (
+            <div>
+              Waiting
+              <CircularProgress isIndeterminate color="green.300" />
+            </div>
+          ) : (
+            <button style={button} onClick={() => handleCall()}>
+              Video Call
+            </button>
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-export default About
+export default About;

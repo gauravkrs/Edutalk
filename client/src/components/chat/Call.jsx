@@ -15,16 +15,13 @@ function Call() {
   const navigate= useNavigate()
   const [yourID, setYourID] = useState("");
   const [users, setUsers] = useState([]);
+  const [mute, setMute] = useState(true)
   const [stream, setStream] = useState();
-  const [receivingCall, setReceivingCall] = useState(false);
-  const [caller, setCaller] = useState("");
-  const [callerSignal, setCallerSignal] = useState();
   const [callAccepted, setCallAccepted] = useState(false);
-
+  const [loading, setLoading] = useState(true)
   const userVideo = useRef();
   const partnerVideo = useRef();
   const socket = useRef();
-
   useEffect(() => {
     socket.current = io.connect("http://localhost:8000");
     navigator.mediaDevices
@@ -35,22 +32,17 @@ function Call() {
           userVideo.current.srcObject = stream;
         }
       });
-
     socket.current.on("yourID", (id) => {
       setYourID(id);
     });
     socket.current.on("allUsers", (users) => {
       setUsers(users);
     });
-
-    socket.current.on("hey", (data) => {
-      setReceivingCall(true);
-      setCaller(data.from);
-      setCallerSignal(data.signal);
-    });
-  }, []);
-
-  function callPeer(id) {
+  }, [callAccepted,loading]);
+  useEffect(() => {
+    socket.current.on("videoClosed", () => navigate("/account"));
+  }, [socket,loading]);
+ function callPeer(id) {
     const peer = new Peer({
       initiator: true,
       trickle: false,
@@ -71,8 +63,8 @@ function Call() {
       stream: stream,
     });
 
-    peer.on("signal", (data) => {
-      socket.current.emit("callUser", {
+     peer.on("signal", (data) => {
+       socket.current.emit("callUser", {
         userToCall: id,
         signalData: data,
         from: yourID,
@@ -90,48 +82,64 @@ function Call() {
       peer.signal(signal);
     });
   }
-  useEffect(() => {
-      const user = JSON.parse(localStorage.getItem("user")) || "";
-      users.map((key) => {
-        if (key != user) {
-          callPeer(key);
-        }
-    })
-  },[])
-  function acceptCall() {
-    setCallAccepted(true);
-    const peer = new Peer({
-      initiator: false,
-      trickle: false,
-      stream: stream,
-    });
-    peer.on("signal", (data) => {
-      socket.current.emit("acceptCall", { signal: data, to: caller });
-    });
-
-    peer.on("stream", (stream) => {
-      partnerVideo.current.srcObject = stream;
-    });
-
-    peer.signal(callerSignal);
+  const startVideo = () => {
+    setLoading(false);
   }
-
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user")) || "";
+    users.map((key) => {
+      if (key != user) {
+        callPeer(key);
+      }
+    });
+  },[socket,loading])
   let UserVideo;
   if (stream) {
-    UserVideo = <Video playsInline muted={true} ref={userVideo} autoPlay />;
+    UserVideo = <Video playsInline muted={mute} ref={userVideo} autoPlay />;
   }
 
   let PartnerVideo;
   if (callAccepted) {
-    PartnerVideo = <Video playsInline ref={partnerVideo} autoPlay />;
+    PartnerVideo = (
+      <Video playsInline ref={partnerVideo} autoPlay />
+    );
   }
   return (
-    <div>
+    <div style={{ textAlign: "center" }}>
+      {loading && (
+        <button
+          style={{
+            width: "200px",
+            color: "white",
+            background: "green",
+            borderRadius: "10px",
+            padding: "5px 10px",
+            textAlign: "center",
+          }}
+          onClick={() => startVideo()}
+        >
+          Start Video
+        </button>
+      )}
       <div>
         {UserVideo}
         {PartnerVideo}
       </div>
-
+      <button
+        style={{
+          width: "100px",
+          color: "white",
+          background: "red",
+          borderRadius: "10px",
+          padding: "5px 10px",
+          textAlign: "center",
+        }}
+        onClick={() => setMute(!mute)}
+      >
+        {mute ? "Unmute" : "Mute"}
+      </button>
+      <br />
+      <br />
       <div style={{ textAlign: "center" }}>
         <button
           style={{
@@ -141,8 +149,8 @@ function Call() {
             padding: "5px",
           }}
           onClick={() => {
-            socket.emit("")
-            navigate("/account")
+            socket.current.emit("close_chat");
+            navigate("/account");
           }}
         >
           End Call

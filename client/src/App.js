@@ -7,13 +7,13 @@ function App() {
   const params = useLocation();
   const [visible, setVisible] = useState(false);
   useEffect(() => {
-    if (params.pathname == "/" || params.pathname == "/payment") {
+    if (params.pathname == "/" || params.pathname == "/payment" ) {
       setVisible(true);
     } else setVisible(false);
   }, [params]);
   return (
     <div className="App">
-      {/* <Navbar/> */}
+      <Navbar/> 
       <Main />
       {visible && <Footer />}
     </div>

@@ -15,7 +15,7 @@ import {
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import axios from "axios"
 
-const Links = ["Dashboard", "Chat", "Video-Call"];
+const Links = ["Dashboard", "Project", "Contact-us"];
 
 const NavLink = ({ children }) => (
   <Link
@@ -26,7 +26,13 @@ const NavLink = ({ children }) => (
       textDecoration: "none",
       bg: useColorModeValue("gray.200", "gray.700"),
     }}
-    href={"#"}
+    href={
+      children == "Dashboard"
+        ? "/"
+        : children == "Project"
+        ? "https://github.com/gauravkrs/Edutalk"
+        : "/contactUs"
+    }
   >
     {children}
   </Link>
@@ -53,7 +59,7 @@ function Navbar() {
     }
   }, []);
   return (
-    <>
+    <div style={{marginBottom: '20px', background:"whitesmoke"}}>
       <Box px={4}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <Box>
@@ -108,7 +114,7 @@ function Navbar() {
           </Flex>
         </Flex>
       </Box>
-    </>
+    </div>
   );
 }
 export default Navbar;

@@ -11,7 +11,7 @@ function Account() {
   const [type1, setType] = useState(true);
   const [notification, setNotification] = useState(false);
   const [videoNotificatioin, setVideoNotification] = useState(false);
-  const [caller, setCaller] = useState("");
+  const [caller, setCaller] = useState({ StudentName: "student"});
   const div = {
     display: "flex",
     alignItems: "center",
@@ -42,19 +42,25 @@ function Account() {
   }, []);
   useEffect(() => {
     socket.on("callUser", (data) => {
-      setVideoNotification(true);
-      setCaller(data.data);
+      if (data.data) {
+        setVideoNotification(true);
+        setCaller(data.data);
+      }
     });
     socket.on("chatNotification", (data) => {
-      setNotification(true);
-      setCaller(data.data);
+      if (data.data) {
+        setNotification(true);
+        setCaller(data.data)
+      }
     });
   }, [socket]);
   const handleNotification = async (type) => {
     if (type === "chat") {
+      setNotification(false);
       await socket.emit("letsChat");
       navigate(`/chat/${caller.ChatID}`);
     } else {
+      setNotification(false);
       await socket.emit("answerCall",caller);
       navigate(`/call/${caller.ChatID}`);
     }

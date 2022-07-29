@@ -1,4 +1,4 @@
-import Navbar from "../Navbar/Navbar";
+
 import ScrollButton from "./ScrollButton";
 import React, { useEffect, useState } from "react";
 
@@ -34,7 +34,6 @@ function HomePage() {
 
   return (
     <>
-      <Navbar />
       <Flex
         display={"flex"}
         flexWrap={"wrap"}

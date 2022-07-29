@@ -1,4 +1,6 @@
 import IMAGE from "./Edutalk.png";
+import React, { useState, useEffect } from "react"
+import {useNavigate} from "react-router-dom"
 import {
   Box,
   Flex,
@@ -11,6 +13,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import axios from "axios"
 
 const Links = ["Dashboard", "Projects", "Team"];
 
@@ -30,7 +33,25 @@ const NavLink = ({ children }) => (
 );
 
 function Navbar() {
+  const navigate= useNavigate()
   const { colorMode, toggleColorMode } = useColorMode();
+  const [login, setLogin] = useState(false)
+  const [user,setUser] = useState({})
+  const handleSignup = () => {
+    if (login) {
+      navigate("/account")
+    }
+    else navigate("/auth")
+  }
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("user")) || null;
+    if (data) {
+      axios.get(`http://localhost:8000/auth/${data}`).then((response) => {
+        setLogin(true);
+        setUser({Name: response.data.Name});
+      })
+    }
+  }, []);
   return (
     <>
       <Box px={4}>
@@ -44,7 +65,12 @@ function Navbar() {
               src={IMAGE}
             />
           </Box>
-          <HStack as={"nav"} spacing={4} marginLeft={"-60px"} display={{ base: "none", md: "flex" }}>
+          <HStack
+            as={"nav"}
+            spacing={4}
+            marginLeft={"-60px"}
+            display={{ base: "none", md: "flex" }}
+          >
             {Links.map((link) => (
               <NavLink key={link}>{link}</NavLink>
             ))}
@@ -61,27 +87,19 @@ function Navbar() {
               direction={"row"}
               spacing={6}
             >
-              <Button
-                as={"a"}
-                fontSize={"sm"}
-                fontWeight={400}
-                variant={"link"}
-                href={"#"}
-              >
-                Sign In
-              </Button>
+              <br />
               <Button
                 display={{ base: "none", md: "inline-flex" }}
                 fontSize={"sm"}
                 fontWeight={600}
                 color={"white"}
                 bg={"rgb(102,163,187)"}
-                href={"#"}
+                onClick={() => handleSignup()}
                 _hover={{
                   bg: "rgb(100,169,190)",
                 }}
               >
-                Sign Up
+                {login ? `${user.Name}` : "Sign Up"}
               </Button>
             </Stack>
           </Flex>

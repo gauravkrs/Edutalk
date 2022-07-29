@@ -1,7 +1,6 @@
 import Navbar from "../Navbar/Navbar";
-import Footer from "../Footer/Footer";
 import ScrollButton from "./ScrollButton";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Flex,
   Circle,
@@ -11,140 +10,6 @@ import {
   Button,
   Text,
 } from "@chakra-ui/react";
-import { BsStar, BsStarFill, BsStarHalf } from "react-icons/bs";
-
-
-const teacher = [
-  {
-    isNew: true,
-    imageURL:
-      "https://st4.depositphotos.com/9998432/22597/v/450/depositphotos_225976914-stock-illustration-person-gray-photo-placeholder-man.jpg",
-    name: "Wayfarer Classic",
-    numReviews: 34,
-    subject: ["React", "MongoDB"],
-    languages: ["english", "Hindi"],
-    experiences: "5 years",
-    rating: 4.2,
-  },
-  {
-    isNew: true,
-    imageURL:
-      "https://st4.depositphotos.com/9998432/22597/v/450/depositphotos_225976914-stock-illustration-person-gray-photo-placeholder-man.jpg",
-    name: "Wayfarer Classic",
-    subject: ["React", "MongoDB"],
-    languages: ["english", "Hindi"],
-    experiences: "5 years",
-    numReviews: 34,
-    rating: 4.2,
-  },
-  {
-    isNew: true,
-    imageURL:
-      "https://st4.depositphotos.com/9998432/22597/v/450/depositphotos_225976914-stock-illustration-person-gray-photo-placeholder-man.jpg",
-    name: "Wayfarer Classic",
-    subject: ["React", "MongoDB"],
-    languages: ["english", "Hindi"],
-    experiences: "5 years",
-    numReviews: 34,
-    rating: 4.2,
-  },
-  {
-    isNew: true,
-    imageURL:
-      "https://st4.depositphotos.com/9998432/22597/v/450/depositphotos_225976914-stock-illustration-person-gray-photo-placeholder-man.jpg",
-    name: "Wayfarer Classic",
-    subject: ["React", "MongoDB"],
-    languages: ["english", "Hindi"],
-    experiences: "5 years",
-    numReviews: 34,
-    rating: 4.2,
-  },
-  {
-    isNew: true,
-    imageURL:
-      "https://st4.depositphotos.com/9998432/22597/v/450/depositphotos_225976914-stock-illustration-person-gray-photo-placeholder-man.jpg",
-    name: "Wayfarer Classic",
-    subject: ["React", "MongoDB"],
-    languages: ["english", "Hindi"],
-    experiences: "5 years",
-    numReviews: 34,
-    rating: 4.2,
-  },
-  {
-    isNew: true,
-    imageURL:
-      "https://st4.depositphotos.com/9998432/22597/v/450/depositphotos_225976914-stock-illustration-person-gray-photo-placeholder-man.jpg",
-    name: "Wayfarer Classic",
-    subject: ["React", "MongoDB"],
-    languages: ["english", "Hindi"],
-    experiences: "5 years",
-    numReviews: 34,
-    rating: 4.2,
-  },
-  {
-    isNew: true,
-    imageURL:
-      "https://st4.depositphotos.com/9998432/22597/v/450/depositphotos_225976914-stock-illustration-person-gray-photo-placeholder-man.jpg",
-    name: "Wayfarer Classic",
-    subject: ["React", "MongoDB"],
-    languages: ["english", "Hindi"],
-    experiences: "5 years",
-    numReviews: 34,
-    rating: 1.2,
-  },
-  {
-    isNew: true,
-    imageURL:
-      "https://st4.depositphotos.com/9998432/22597/v/450/depositphotos_225976914-stock-illustration-person-gray-photo-placeholder-man.jpg",
-    name: "Wayfarer Classic",
-    subject: ["React", "MongoDB"],
-    languages: ["english", "Hindi"],
-    experiences: "5 years",
-    numReviews: 34,
-    rating: 2.2,
-  },
-  {
-    isNew: true,
-    imageURL:
-      "https://st4.depositphotos.com/9998432/22597/v/450/depositphotos_225976914-stock-illustration-person-gray-photo-placeholder-man.jpg",
-    name: "Wayfarer Classic",
-    subject: ["React", "MongoDB"],
-    languages: ["english", "Hindi"],
-    experiences: "5 years",
-    numReviews: 34,
-    rating: 1.2,
-  },
-];
-
-
-
-function Rating({ rating, numReviews }) {
-  return (
-    <Box display={"flex"}>
-      {Array(5)
-        .fill("")
-        .map((_, i) => {
-          const roundedRating = Math.round(rating * 2) / 2;
-          if (roundedRating - i >= 1) {
-            return (
-              <BsStarFill
-                key={i}
-                style={{ marginLeft: "1" }}
-                color={i < rating ? "teal.500" : "gray.300"}
-              />
-            );
-          }
-          if (roundedRating - i === 0.5) {
-            return <BsStarHalf key={i} style={{ marginLeft: "1" }} />;
-          }
-          return <BsStar key={i} style={{ marginLeft: "1" }} />;
-        })}
-      <Box as="span" ml="2" color="gray.600" fontSize="sm">
-        {numReviews} review{numReviews > 1 && "s"}
-      </Box>
-    </Box>
-  );
-}
 
 function HomePage() {
   const [getteacherdata, setteacherdata] = useState([]);
@@ -171,88 +36,68 @@ function HomePage() {
     getdata();
   }, []);
 
-  
-
   return (
     <>
       <Navbar />
-      <Flex
-        display={"flex"}
-        flexWrap={"wrap"}
-        width={"100%"}
-        rowGap={"20px"}
-        margin={"auto"}
-      >
-        {teacher.map((data, index) => (
+      <Flex display={"flex"} flexWrap={"wrap"} width={"80%"} margin={"auto"}>
+        {getteacherdata.map((data, index) => (
           <Flex
             display={"flex"}
             margin={"auto"}
             borderWidth="1px"
             rounded="lg"
-            shadow="lg"
-            w="31.5%"
+            boxShadow="rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px"
+            w="45.5%"
+            h="200px"
           >
-            <Box maxW="sm" width={"40%"} height={"150px"} position="relative">
-              {data.isNew && (
-                <Circle
-                  size="10px"
-                  position="absolute"
-                  top={2}
-                  right={2}
-                  bg="red.200"
-                />
-              )}
-
+            <Box maxW="sm" width={"50%"} height={"198px"} position="relative">
               <Image
                 src={data.imageURL}
                 rounded={"full"}
-                alt={`Picture of ${data.name}`}
-                width={"100px"}
-                height={"100px"}
+                width={"200px"}
+                height={"200px"}
                 objectFit={"cover"}
               />
-              <Flex justifyContent="space-between" alignContent="center">
-                <Rating rating={data.rating} numReviews={data.numReviews} />
-              </Flex>
             </Box>
-            <Box width={"60%"}>
-              <Box d="flex" alignItems="baseline">
-                {data.isNew && (
-                  <Badge rounded="full" px="2" fontSize="8px" colorScheme="red">
-                    FREE
-                  </Badge>
-                )}
-              </Box>
+            <Box width={"59%"}>
               <Flex
                 justifyContent="space-between"
                 align={"right"}
                 alignContent="center"
+                height={"195px"}
               >
                 <Box
-                  fontSize="16px"
+                  m={"20px"}
+                  fontSize="25px"
                   fontWeight="semibold"
                   as="h4"
                   lineHeight="tight"
-                 
-                  
                 >
-                  {data.name}
-                  <Text fontSize="10 px">{data.subject}</Text>
-                  <Text fontSize="10px">{data.languages}</Text>
-                  <Text fontSize="10px">{data.experiences}</Text>
+                  {data.Name}
+                  <Text fontSize="16px">{data.Expertise}</Text>
+                  <Text color={"grey"} fontSize="12px">
+                    {data.experience}
+                  </Text>
+                  <Box d="flex" alignItems="baseline">
+                    <Badge
+                      borderRadius={"10px"}
+                      px="2"
+                      fontSize="18px"
+                      colorScheme="teal"
+                    >
+                      {`₹${data.Charge}`}
+                    </Badge>
+                  </Box>
                   <Button
                     flex={1}
-                    color="Green"
-                    backgroundColor={"light green"}
-                    border={"2px solid green"}
+                    color="rgb(102,163,187)"
+                    backgroundColor={"white"}
+                    border={"2px solid rgb(102,163,187)"}
                     borderRadius={"10px"}
                     fontSize={"sm"}
-                    _focus={{
-                      bg: "gray.200",
-                    }}
-                    marginLeft={"95%"}   
+                    width={"120px"}
                   >
-                    view
+                    View
                   </Button>
                 </Box>
               </Flex>
@@ -261,7 +106,6 @@ function HomePage() {
         ))}
       </Flex>
       <ScrollButton />
-      
     </>
   );
 }

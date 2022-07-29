@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Payment } from "./components/Payment/Payment";
+// import { Payment } from "./components/Payment/Payment";
 import Main from "./Main";
 function App() {
   const loadScript = (src) => {
@@ -21,8 +21,8 @@ function App() {
   });
   return (
     <div className="App">
-      {/* <Main/> */}
-      <Payment />
+      <Main/>
+      {/* <Payment /> */}
     </div>
   );
 }

@@ -1,40 +1,31 @@
 const { Router } = require("express");
-const Razorpay = require("razorpay");
-const shortId = require("shortid");
+require("dotenv").config();
+const stripe = require("stripe")(process.env.STRIPE_SECRET_TEST);
+
 const paymentRouter = Router();
 
-const razorpay = new Razorpay({
-  key_id: "rzp_test_RmmFuCzmdYspcf",
-  key_secret: "4hfPBupTgbJs9bl7gguPV6LU",
-});
-
 paymentRouter.post("/", async (req, res) => {
-  const payment_capture = 1;
-  const amount = 499;
-  const currency = "INR";
-
-  const options = {
-    amount: amount * 100,
-    currency: currency,
-    receipt: shortId.generate(),
-    payment_capture,
-  };
-
+  let { amount, id } = req.body;
   try {
-    const response = await razorpay.orders.create(options);
-    console.log(response);
+    const payment = await stripe.paymentIntents.create({
+      amount,
+      currency: "INR",
+      description: "Edutech company",
+      payment_method: id,
+      confirm: true,
+    });
+    console.log("Pay", payment);
     res.json({
-      id: response.id,
-      currency: response.currency,
-      amount: response.amount,
+      message: "Payment successful",
+      success: true,
     });
   } catch (error) {
     console.log("err", error);
+    res.json({
+      message: "Payment failed",
+      success: false,
+    });
   }
-});
-
-paymentRouter.get("/", async (req, res) => {
-  res.json({});
 });
 
 module.exports = paymentRouter;

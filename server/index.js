@@ -10,6 +10,7 @@ const teacher = require("./routes/teacher");
 const server = require("http").createServer(app);
 const { Server } = require("socket.io");
 var messages = [];
+var users=[]
 //<---------------------------------------------------------------->//Chat App
 const io = new Server(server, {
   cors: {
@@ -35,14 +36,27 @@ io.on("connection", (socket) => {
     console.log("User Disconnected", socket.id);
   });
   //------------------------------------------for video
+  if (!users[socket.id]) {
+    users[socket.id] = socket.id;
+  }
+  socket.emit("yourID", socket.id);
+  io.sockets.emit("allUsers", users);
+  socket.on('disconnect', () => {
+    delete users[socket.id];
+  })
+
+
   socket.on("callUser", (data) => {
     socket.broadcast.emit("callUser", data);
     io.to(data.userToCall).emit('hey', {signal: data.signalData, from: data.from});
   });
-
-  socket.on("answerCall", (data) => {
-    socket.broadcast.emit("callAccepted");
+  socket.on("acceptCall", (data) => {
     io.to(data.to).emit('callAccepted', data.signal);
+  })
+  socket.on("answerCall", (data) => {
+    users[0] = (data.TeacherID)
+    users[1] = (data.StudentID)
+    socket.broadcast.emit("callaccepted");
   });
 });
 

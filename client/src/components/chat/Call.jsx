@@ -3,27 +3,15 @@ import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled from "styled-components";
 
-const Container = styled.div`
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const Row = styled.div`
-  display: flex;
-  width: 100%;
-`;
-
 const Video = styled.video`
-  border: 1px solid blue;
-  width: 50%;
-  height: 50%;
+  width: 100%;
+  height: 500px;
+  margin: 20px auto;
 `;
 
 function Call() {
   const [yourID, setYourID] = useState("");
-  const [users, setUsers] = useState({});
+  const [users, setUsers] = useState([]);
   const [stream, setStream] = useState();
   const [receivingCall, setReceivingCall] = useState(false);
   const [caller, setCaller] = useState("");
@@ -138,21 +126,49 @@ function Call() {
     );
   }
   return (
-    <Container>
-      <Row>
+    <div>
+      <div>
         {UserVideo}
         {PartnerVideo}
-      </Row>
-      <Row>
-        {Object.keys(users).map((key) => {
-          if (key === yourID) {
-            return null;
-          }
-          return <button onClick={() => callPeer(key)}>Call {key}</button>;
+      </div>
+
+      <div style={{ textAlign: "center" }}>
+        {users.map((key) => {
+          const user = JSON.parse(localStorage.getItem("user")) || "";
+          if (key != user)
+            return (
+              <button
+                style={{
+                  width: "200px",
+                  color: "white",
+                  background: "royalblue",
+                  borderRadius: "15px",
+                  padding: "5px",
+                }}
+                key={key}
+                onClick={() => callPeer(key)}
+              >
+                Start Video
+              </button>
+            );
         })}
-      </Row>
-      <Row>{incomingCall}</Row>
-    </Container>
+        <br />
+        <br />
+        <button
+          style={{
+            width: "200px",
+            color: "white",
+            background: "black",
+            padding: "5px",
+          }}
+          onClick={() => {
+            socket.emit("")
+          }}
+        >
+          End Call
+        </button>
+      </div>
+    </div>
   );
 }
 

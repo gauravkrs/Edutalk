@@ -70,7 +70,7 @@ function About() {
       setChatLoading(false);
       navigate(`/chat/${url.current}`);
     });
-    socket.on("callAccepted", () => {
+    socket.on("callaccepted", () => {
       setVideoLoading(false);
       navigate(`/call/${url.current}`);
     });

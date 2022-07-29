@@ -56,7 +56,7 @@ function Account() {
       await socket.emit("letsChat");
       navigate(`/chat/${caller.ChatID}`);
     } else {
-      await socket.emit("answerCall");
+      await socket.emit("answerCall",caller);
       navigate(`/call/${caller.ChatID}`);
     }
   };

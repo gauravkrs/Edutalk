@@ -37,10 +37,12 @@ io.on("connection", (socket) => {
   //------------------------------------------for video
   socket.on("callUser", (data) => {
     socket.broadcast.emit("callUser", data);
+    io.to(data.userToCall).emit('hey', {signal: data.signalData, from: data.from});
   });
 
-  socket.on("answerCall", () => {
+  socket.on("answerCall", (data) => {
     socket.broadcast.emit("callAccepted");
+    io.to(data.to).emit('callAccepted', data.signal);
   });
 });
 

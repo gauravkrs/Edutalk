@@ -2,14 +2,17 @@ import React, { useEffect, useState, useRef } from "react";
 import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled from "styled-components";
-
+import {useNavigate} from "react-router-dom"
 const Video = styled.video`
   width: 100%;
   height: 500px;
   margin: 20px auto;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset,
+    rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 `;
 
 function Call() {
+  const navigate= useNavigate()
   const [yourID, setYourID] = useState("");
   const [users, setUsers] = useState([]);
   const [stream, setStream] = useState();
@@ -87,7 +90,14 @@ function Call() {
       peer.signal(signal);
     });
   }
-
+  useEffect(() => {
+      const user = JSON.parse(localStorage.getItem("user")) || "";
+      users.map((key) => {
+        if (key != user) {
+          callPeer(key);
+        }
+    })
+  },[])
   function acceptCall() {
     setCallAccepted(true);
     const peer = new Peer({
@@ -108,22 +118,12 @@ function Call() {
 
   let UserVideo;
   if (stream) {
-    UserVideo = <Video playsInline muted ref={userVideo} autoPlay />;
+    UserVideo = <Video playsInline muted={true} ref={userVideo} autoPlay />;
   }
 
   let PartnerVideo;
   if (callAccepted) {
     PartnerVideo = <Video playsInline ref={partnerVideo} autoPlay />;
-  }
-
-  let incomingCall;
-  if (receivingCall) {
-    incomingCall = (
-      <div>
-        <h1>{caller} is calling you</h1>
-        <button onClick={acceptCall}>Accept</button>
-      </div>
-    );
   }
   return (
     <div>
@@ -133,27 +133,6 @@ function Call() {
       </div>
 
       <div style={{ textAlign: "center" }}>
-        {users.map((key) => {
-          const user = JSON.parse(localStorage.getItem("user")) || "";
-          if (key != user)
-            return (
-              <button
-                style={{
-                  width: "200px",
-                  color: "white",
-                  background: "royalblue",
-                  borderRadius: "15px",
-                  padding: "5px",
-                }}
-                key={key}
-                onClick={() => callPeer(key)}
-              >
-                Start Video
-              </button>
-            );
-        })}
-        <br />
-        <br />
         <button
           style={{
             width: "200px",
@@ -163,6 +142,7 @@ function Call() {
           }}
           onClick={() => {
             socket.emit("")
+            navigate("/account")
           }}
         >
           End Call

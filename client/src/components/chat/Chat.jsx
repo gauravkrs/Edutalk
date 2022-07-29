@@ -56,6 +56,7 @@ function Chat() {
   };
 
   useEffect(() => {
+    socket.on("chatClosed", () => navigate("/account"));
     socket.on("receive_message", (data) => {
       setMessageList(data);
     });
@@ -64,6 +65,7 @@ function Chat() {
    messageRef.current.scrollIntoView();
   }, [messageList])
   const handleChatEnd = () => {
+    socket.emit("close_chat")
     navigate("/account")
   }
   const left = {

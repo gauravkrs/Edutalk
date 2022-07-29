@@ -18,7 +18,11 @@ const io = new Server(server, {
 });
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
-
+  
+  socket.on("close_chat", () => {
+    socket.broadcast.emit("chatClosed")
+  })
+  //<---------------------------------------------------------------->//chat
   socket.on("startChat", (data) => {
     socket.broadcast.emit("chatNotification", data);
   });
@@ -29,7 +33,7 @@ io.on("connection", (socket) => {
     messages.push(data)
     socket.broadcast.emit("receive_message", messages);
   });
-  socket.emit("receive_message", messages);
+  //<---------------------------------------------------------------->//video
   socket.on("disconnect", () => {
     console.log("User Disconnected", socket.id);
   });

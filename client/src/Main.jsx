@@ -5,9 +5,9 @@ import Login from "./components/authentication/Login";
 import HomePage from "./components/Home/Home";
 import { Payment } from "./components/Payment/Payment";
 import Chat from "./components/chat/Chat";
-import About from "./components/about/About";
+import About from "./components/About/About";
 import Call from "./components/chat/Call";
-import Account from "./components/about/Account";
+import Account from "./components/About/Account";
 import PageNotFound from "./PageNotFound";
 function Main() {
   return (

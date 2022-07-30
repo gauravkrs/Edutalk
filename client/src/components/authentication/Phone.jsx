@@ -32,6 +32,8 @@ function Phone({ setPage }) {
   };
   return (
     <div className={styles.innerDiv}>
+      <h1 style={{color:"royalblue", fontSize:"30px"}}>Register Yourself</h1>
+      <br />
       <form onSubmit={(e) => handleSubmit(e)}>
               <input
                   onChange={(e)=>setNumber(e.target.value)}

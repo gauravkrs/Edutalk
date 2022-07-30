@@ -91,6 +91,9 @@ function About() {
     padding: "5px",
   };
   useEffect(() => {
+    const type = JSON.parse(localStorage.getItem("designation")) || "";
+    if (type == "teacher") navigate("/account");
+    else if(type=="") navigate("/auth")
     const id = params.id;
     axios.get(`http://localhost:8000/auth/${id}`).then((response) => {
       setUser(response.data);
@@ -142,7 +145,7 @@ function About() {
             </div>
             <div style={div}>
               <p style={{ color: "royalblue" }}>Experties :</p>
-              <p>{user.Experties}</p>
+              <p>{user.Expertise}</p>
             </div>
           </div>
         </div>

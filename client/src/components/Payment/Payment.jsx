@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+import {useNavigate} from "react-router-dom"
 import {
   CardCvcElement,
   CardElement,
@@ -30,7 +31,12 @@ export const Payment = () => {
   const [success, setSuccess] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
-
+  const navigate = useNavigate()
+  useEffect(() => {
+    const type = JSON.parse(localStorage.getItem("designation")) || "";
+    if (type == "teacher") navigate("/account");
+    else if (type == "") navigate("/");
+  },[])
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { error, paymentMethod } = await stripe.createPaymentMethod({
@@ -56,22 +62,57 @@ export const Payment = () => {
     }
   };
   return (
-    <div>
+    <div
+      style={{
+        padding: "100px",
+        width: "50%",
+        margin: "auto",
+        boxShadow:
+          "rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset",
+      }}
+    >
       {!success ? (
-        <form onSubmit={handleSubmit} style={{ width: "20%", margin: "auto" }}>
+        <form
+          onSubmit={handleSubmit}
+          style={{ width: "70%", margin: "auto", textAlign: "center" }}
+        >
           <fieldset>
-            <div>
+            <div style={{ background: "whitesmoke", padding: "5px" }}>
               <CardElement options={CARD_OPTIONS} />
             </div>
           </fieldset>
-          <button>Pay</button>
+          <br />
+          <br />
+          <button
+            style={{
+              width: "50%",
+              color: "white",
+              background: "black",
+              padding: "5px",
+            }}
+          >
+            Pay
+          </button>
         </form>
       ) : (
-        <div>
-          <h2>
+        <div style={{textAlign: "center"}}>
+          <h2 style={{textAlign: "justify", color: "#66a3bb", fontSize: "20px"}}>
             You just recharge your wallet, this is best decision of your life to
             enjoy our service
           </h2>
+          <br />
+          <br />
+          <button
+            style={{
+              width: "50%",
+              color: "white",
+              background: "royalblue",
+              padding: "10px",
+            }}
+            onClick={() => navigate("/account")}
+          >
+            Check Your wallet
+          </button>
         </div>
       )}
     </div>

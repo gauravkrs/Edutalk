@@ -6,11 +6,12 @@ import { BrowserRouter } from "react-router-dom"
 import { ChakraProvider } from '@chakra-ui/react'
 import * as ServiceWorker from './serviceWorker'
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <ChakraProvider>
-  <BrowserRouter>
-    <App />
+    <BrowserRouter>
+        <App />
     </BrowserRouter>
   </ChakraProvider>
 );

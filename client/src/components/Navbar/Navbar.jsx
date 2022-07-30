@@ -1,6 +1,6 @@
 import IMAGE from "./Edutalk.png";
 import React, { useState, useEffect } from "react"
-import {useNavigate} from "react-router-dom"
+import {useNavigate,useParams} from "react-router-dom"
 import {
   Box,
   Flex,
@@ -14,8 +14,10 @@ import {
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import axios from "axios"
-
-const Links = ["Dashboard", "Project", "Contact-us"];
+const type = JSON.parse(localStorage.getItem("designation")) || "";
+var Links=[]
+if (type == "student") Links = ["Dashboard", "Contact us", "Recharge Wallet"];
+else Links = ["Dashboard", "Contact us"];
 
 const NavLink = ({ children }) => (
   <Link
@@ -29,9 +31,9 @@ const NavLink = ({ children }) => (
     href={
       children == "Dashboard"
         ? "/"
-        : children == "Project"
+        : children == "Contact us"
         ? "https://github.com/gauravkrs/Edutalk"
-        : "/contactUs"
+        : "/payment"
     }
   >
     {children}
@@ -39,7 +41,8 @@ const NavLink = ({ children }) => (
 );
 
 function Navbar() {
-  const navigate= useNavigate()
+  const navigate = useNavigate()
+  const params = useParams()
   const { colorMode, toggleColorMode } = useColorMode();
   const [login, setLogin] = useState(false)
   const [user,setUser] = useState({})
@@ -57,7 +60,7 @@ function Navbar() {
         setUser({Name: response.data.Name});
       })
     }
-  }, []);
+  }, [params]);
   return (
     <div style={{marginBottom: '20px'}}>
       <Box px={4} bg={useColorModeValue("gray.50", "gray.900")}

@@ -7,7 +7,7 @@ const teacherSchema = new Schema({
     Status: {type: Boolean, default: false},
     onCall: { type: Boolean, default: false },
     Charge: { type: Number, default: 10 },
-    Experience: { type: Number, default: 0 },
+    Experience: String,
     About: String,
     Expertise: { type: String },
 })

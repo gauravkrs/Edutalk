@@ -23,6 +23,8 @@ function Call() {
   const partnerVideo = useRef();
   const socket = useRef();
   useEffect(() => {
+    const type = JSON.parse(localStorage.getItem("designation")) || "";
+    if (type == "") navigate("/");
     socket.current = io.connect("http://localhost:8000");
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })

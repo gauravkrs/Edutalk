@@ -1,6 +1,5 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-// import Teacher from "./components/About/Teacher";
 import Login from "./components/authentication/Login";
 import HomePage from "./components/Home/Home";
 import { Payment } from "./components/Payment/Payment";
@@ -9,13 +8,14 @@ import About from "./components/About/About";
 import Call from "./components/chat/Call";
 import Account from "./components/About/Account";
 import PageNotFound from "./PageNotFound";
+import { Stripep } from "./components/Payment/Stripep";
 function Main() {
   return (
     <div>
       <Routes>
         <Route path="/auth" element={<Login />} />
         <Route path="/" element={<HomePage />} />
-        <Route path="/payment" element={<Payment />} />
+        <Route path="/payment" element={<Stripep />} />
         <Route path="/chat/:id" element={<Chat />} />
         <Route path="/call/:id" element={<Call />} />
         <Route path="/about/:id" element={<About />} />

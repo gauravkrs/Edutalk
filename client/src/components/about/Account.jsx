@@ -7,7 +7,7 @@ const socket = io.connect("http://localhost:8000");
 
 function Account() {
   const navigate = useNavigate();
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState({});
   const [type1, setType] = useState(true);
   const [notification, setNotification] = useState(false);
   const [videoNotificatioin, setVideoNotification] = useState(false);
@@ -29,9 +29,12 @@ function Account() {
   const handleLogout = async () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("designation");
     navigate("/auth");
   };
   useEffect(() => {
+    const type = JSON.parse(localStorage.getItem("designation")) || "";
+    if (type == "") navigate("/");
     const id = JSON.parse(localStorage.getItem("user"));
     axios.get(`http://localhost:8000/auth/${id}`).then((response) => {
       setUser(response.data);
@@ -118,7 +121,7 @@ function Account() {
           </div>
           <div style={div}>
             <p style={{ color: "royalblue" }}>Experties :</p>
-            <p>{user.Experties}</p>
+            <p>{user.Expertise}</p>
           </div>
         </div>
       </div>

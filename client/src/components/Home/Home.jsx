@@ -29,6 +29,8 @@ function HomePage() {
   };
 
   useEffect(() => {
+    const type = JSON.parse(localStorage.getItem("designation")) || "";
+    if (type == "teacher") navigate("/account");
     getdata();
   }, []);
 
@@ -63,7 +65,6 @@ function HomePage() {
               />
             </Box>
             <Box width={"59%"}>
-              <Box>{data.id}</Box>
               <Flex
                 justifyContent="space-between"
                 align={"right"}
@@ -80,7 +81,7 @@ function HomePage() {
                   {data.Name}
                   <Text fontSize="16px">{data.Expertise}</Text>
                   <Text color={"grey"} fontSize="12px">
-                    {data.experience}
+                    {data.Experience}
                   </Text>
                   <Box d="flex" alignItems="baseline">
                     <Badge

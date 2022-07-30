@@ -45,6 +45,14 @@ function Otp({ setPage }) {
                         "user",
                         JSON.stringify(response.data.ID)
                       );
+                      var type
+                      if (response.data.Charge) {
+                        type="teacher"
+                      }else type= "student"
+                      localStorage.setItem(
+                        "designation",
+                        JSON.stringify(type)
+                      );
                       notify("Signed In Successfully");
                       navigate("/");
                     }

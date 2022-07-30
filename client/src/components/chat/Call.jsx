@@ -25,7 +25,7 @@ function Call() {
   useEffect(() => {
     const type = JSON.parse(localStorage.getItem("designation")) || "";
     if (type == "") navigate("/");
-    socket.current = io.connect("http://localhost:8000");
+    socket.current = io.connect("https://edutechb.herokuapp.com");
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((stream) => {

@@ -55,10 +55,12 @@ function Navbar() {
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("user")) || null;
     if (data) {
-      axios.get(`http://localhost:8000/auth/${data}`).then((response) => {
-        setLogin(true);
-        setUser({Name: response.data.Name});
-      })
+      axios
+        .get(`https://edutechb.herokuapp.com/auth/${data}`)
+        .then((response) => {
+          setLogin(true);
+          setUser({ Name: response.data.Name });
+        });
     }
   }, [params]);
   return (

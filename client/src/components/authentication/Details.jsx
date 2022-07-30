@@ -47,17 +47,19 @@ function Details() {
             };
         }
       console.log(user)
-      axios.post("http://localhost:8000/auth/register", user).then((response) => {
+      axios
+        .post("https://edutechb.herokuapp.com/auth/register", user)
+        .then((response) => {
           var type;
           if (response.data.Charge) {
             type = "teacher";
           } else type = "student";
-            localStorage.setItem("designation", JSON.stringify(type));
-            localStorage.setItem("token", JSON.stringify(data.Token))
-        localStorage.setItem("user", JSON.stringify(response.data.ID));
-        localStorage.removeItem("preUser")
-            notify()
-        })
+          localStorage.setItem("designation", JSON.stringify(type));
+          localStorage.setItem("token", JSON.stringify(data.Token));
+          localStorage.setItem("user", JSON.stringify(response.data.ID));
+          localStorage.removeItem("preUser");
+          notify();
+        });
     }
     return (
       <div className={styles.innerDiv}>

@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { CircularProgress } from "@chakra-ui/progress";
 import io from "socket.io-client";
-const socket = io.connect("http://localhost:8000");
+const socket = io.connect("https://edutechb.herokuapp.com");
 
 function Account() {
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ function Account() {
     const type = JSON.parse(localStorage.getItem("designation")) || "";
     if (type == "") navigate("/");
     const id = JSON.parse(localStorage.getItem("user"));
-    axios.get(`http://localhost:8000/auth/${id}`).then((response) => {
+    axios.get(`https://edutechb.herokuapp.com/auth/${id}`).then((response) => {
       setUser(response.data);
       if (response.data.Charge) {
         setType(false);

@@ -6,7 +6,7 @@ const authRouter = require("./routes/authRoutes");
 const paymentRouter = require("./routes/paymentRoutes");
 const chatRouter = require("./routes/chatRoutes");
 const videoRouter = require("./routes/videoRoutes");
-const teacher = require("./routes/teacher");
+const teacher = require("./routes/Teacher");
 const server = require("http").createServer(app);
 const { Server } = require("socket.io");
 var messages = [];
@@ -14,7 +14,7 @@ var users=[]
 //<---------------------------------------------------------------->//Chat App
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });

@@ -6,7 +6,7 @@ import { v4 } from "uuid";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import io from "socket.io-client";
-const socket = io.connect("http://localhost:8000");
+const socket = io.connect("https://edutechb.herokuapp.com");
 //<---------------------------------------------------------------->
 function Chat() {
   const navigate= useNavigate()
@@ -25,9 +25,9 @@ function Chat() {
     else {
       t0= performance.now()
     }
-    axios.get(`http://localhost:8000/auth/${userID}`).then((response) => {
+    axios.get(`https://edutechb.herokuapp.com/auth/${userID}`).then((response) => {
       const chatID = params.id
-      axios.get(`http://localhost:8000/chat/${chatID}`).then((res) => {
+      axios.get(`https://edutechb.herokuapp.com/chat/${chatID}`).then((res) => {
         if (res.data.Message == "No Such Chat Room") {
           navigate("/");
         }
@@ -66,7 +66,7 @@ function Chat() {
         const TeacherID = JSON.parse(localStorage.getItem("TeacherID"));
         const request = { amount: time, type: "dec", TeacherID: TeacherID };
         axios
-          .put(`http://localhost:8000/auth/${id}`, request)
+          .put(`https://edutechb.herokuapp.com/auth/${id}`, request)
           .then((response) => {
             socket.emit("close_chat", time);
             navigate("/account");
@@ -89,7 +89,7 @@ function Chat() {
       const id = JSON.parse(localStorage.getItem("user"))
       const TeacherID = JSON.parse(localStorage.getItem("TeacherID"));
       const request = { amount: time, type: "dec", TeacherID: TeacherID };
-      axios.put(`http://localhost:8000/auth/${id}`, request).then((response) => {
+      axios.put(`https://edutechb.herokuapp.com/auth/${id}`, request).then((response) => {
         navigate("/account");
       });
     }

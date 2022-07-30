@@ -69,7 +69,6 @@ const userByPhone = async (req, res) => {
     } else {
         res.send(search1[0])
     }
-    
 }
 
 const teacher= async (req,res)=>{

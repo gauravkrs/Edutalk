@@ -21,9 +21,11 @@ function Otp({ setPage }) {
             .then((result) => {
                 console.log(result)
                 axios
-                  .get(`http://localhost:8000/auth/phone/${result.user.phoneNumber}`)
-                    .then((response) => {
-                      console.log(response)
+                  .get(
+                    `https://edutechb.herokuapp.com/auth/phone/${result.user.phoneNumber}`
+                  )
+                  .then((response) => {
+                    console.log(response);
                     if (response.data.Message == "Not registered") {
                       const userPreData = {
                         Token: result._tokenResponse.idToken,
@@ -45,14 +47,11 @@ function Otp({ setPage }) {
                         "user",
                         JSON.stringify(response.data.ID)
                       );
-                      var type
+                      var type;
                       if (response.data.Charge) {
-                        type="teacher"
-                      }else type= "student"
-                      localStorage.setItem(
-                        "designation",
-                        JSON.stringify(type)
-                      );
+                        type = "teacher";
+                      } else type = "student";
+                      localStorage.setItem("designation", JSON.stringify(type));
                       notify("Signed In Successfully");
                       navigate("/");
                     }

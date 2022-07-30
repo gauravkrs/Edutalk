@@ -4,7 +4,7 @@ import { CircularProgress } from "@chakra-ui/progress";
 import axios from "axios";
 import { v4 } from "uuid";
 import io from "socket.io-client";
-const socket = io.connect("http://localhost:8000");
+const socket = io.connect("https://edutechb.herokuapp.com");
 
 function About() {
   var url = useRef();
@@ -19,7 +19,7 @@ function About() {
       teacher: params.id,
       student: studentID,
     };
-    axios.post("http://localhost:8000/auth/chat", userID).then((response) => {
+    axios.post("https://edutechb.herokuapp.com/auth/chat", userID).then((response) => {
       const chatID = v4();
       const user = {
         ChatID: chatID,
@@ -30,7 +30,7 @@ function About() {
       };
 
       axios
-        .post(`http://localhost:8000/chat/${chatID}`, user)
+        .post(`https://edutechb.herokuapp.com/chat/${chatID}`, user)
         .then(async (res) => {
           url.current = res.data.ChatID;
           localStorage.setItem("TeacherID", JSON.stringify(res.data.TeacherID))
@@ -46,7 +46,7 @@ function About() {
       teacher: params.id,
       student: studentID,
     };
-    axios.post("http://localhost:8000/auth/chat", userID).then((response) => {
+    axios.post("https://edutechb.herokuapp.com/auth/chat", userID).then((response) => {
       console.log(response);
       const chatID = v4();
       const user = {
@@ -58,7 +58,7 @@ function About() {
       };
 
       axios
-        .post(`http://localhost:8000/video/${chatID}`, user)
+        .post(`https://edutechb.herokuapp.com/video/${chatID}`, user)
         .then(async (res) => {
           url.current = res.data.ChatID;
           await socket.emit("callUser", res);
@@ -96,7 +96,7 @@ function About() {
     if (type == "teacher") navigate("/account");
     else if(type=="") navigate("/auth")
     const id = params.id;
-    axios.get(`http://localhost:8000/auth/${id}`).then((response) => {
+    axios.get(`https://edutechb.herokuapp.com/auth/${id}`).then((response) => {
       setUser(response.data);
     });
   }, []);

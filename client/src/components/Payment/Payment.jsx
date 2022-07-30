@@ -50,14 +50,14 @@ export const Payment = () => {
     if (!error) {
       try {
         const { id } = paymentMethod;
-        const res = await axios.post("http://localhost:8000/payment", {
+        const res = await axios.post("https://edutechb.herokuapp.com/payment", {
           amount: amount*100,
           id,
         });
         if (res.data.success) {
           const id = JSON.parse(localStorage.getItem("user")) 
           const request = { amount: amount, type:"inc" };
-          axios.put(`http://localhost:8000/auth/${id}`,request).then((response) => {
+          axios.put(`https://edutechb.herokuapp.com/auth/${id}`,request).then((response) => {
             console.log("Successful Payment");
             setCircle(false)
             setSuccess(true);

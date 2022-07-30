@@ -10,7 +10,7 @@ function HomePage() {
   const navigate = useNavigate();
 
   const getdata = async () => {
-    const res = await fetch("http://localhost:8000/", {
+    const res = await fetch("https://edutechb.herokuapp.com", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

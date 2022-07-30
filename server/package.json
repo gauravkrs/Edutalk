@@ -11,6 +11,6 @@
     "stripe": "^9.16.0"
   },
   "scripts": {
-    "dev": "nodemon index.js"
+    "start": "nodemon index.js"
   }
 }

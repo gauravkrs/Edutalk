@@ -1,5 +1,6 @@
 import React, { useState,useEffect } from "react";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import { CircularProgress } from "@chakra-ui/progress";
 import {
   CardCvcElement,
   CardElement,
@@ -29,6 +30,8 @@ const CARD_OPTIONS = {
 
 export const Payment = () => {
   const [success, setSuccess] = useState(false);
+  const [amount, setAmount] = useState(0)
+  const [circle, setCircle] = useState(false)
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate()
@@ -39,6 +42,7 @@ export const Payment = () => {
   },[])
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setCircle(true)
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
       card: elements.getElement(CardElement),
@@ -47,12 +51,17 @@ export const Payment = () => {
       try {
         const { id } = paymentMethod;
         const res = await axios.post("http://localhost:8000/payment", {
-          amount: 1000,
+          amount: amount*100,
           id,
         });
         if (res.data.success) {
-          console.log("Successful Payment");
-          setSuccess(true);
+          const id = JSON.parse(localStorage.getItem("user")) 
+          const request = { amount: amount, type:"inc" };
+          axios.put(`http://localhost:8000/auth/${id}`,request).then((response) => {
+            console.log("Successful Payment");
+            setCircle(false)
+            setSuccess(true);
+          })
         }
       } catch (error) {
         console.log("err", error);
@@ -76,14 +85,30 @@ export const Payment = () => {
           onSubmit={handleSubmit}
           style={{ width: "70%", margin: "auto", textAlign: "center" }}
         >
+          <input
+            style={{
+              width: "100%",
+              background: "whitesmoke",
+              padding: "10px",
+              outline: "none",
+            }}
+            type="number"
+            min="100"
+            max="2000"
+            required
+            placeholder="Enter Amount"
+            onChange={(e) => setAmount(e.target.value)}
+          />
+          <br />
+          <br />
           <fieldset>
-            <div style={{ background: "whitesmoke", padding: "5px" }}>
+            <div style={{ background: "whitesmoke", padding: "10px" }}>
               <CardElement options={CARD_OPTIONS} />
             </div>
           </fieldset>
           <br />
           <br />
-          <button
+          {!circle && <button
             style={{
               width: "50%",
               color: "white",
@@ -92,13 +117,19 @@ export const Payment = () => {
             }}
           >
             Pay
-          </button>
+          </button>}
+          {circle && <div
+            style={{ width: "10%", margin: "100px auto", textAlign: "center" }}
+          >
+            <CircularProgress isIndeterminate color="#66a3bb" />
+          </div>}
         </form>
       ) : (
-        <div style={{textAlign: "center"}}>
-          <h2 style={{textAlign: "justify", color: "#66a3bb", fontSize: "20px"}}>
-            You just recharge your wallet, this is best decision of your life to
-            enjoy our service
+        <div style={{ textAlign: "center" }}>
+          <h2
+            style={{ textAlign: "center", color: "#66a3bb", fontSize: "20px" }}
+          >
+            Your Recharge of ₹ {amount} is successfully done.
           </h2>
           <br />
           <br />

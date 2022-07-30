@@ -17,7 +17,7 @@ import axios from "axios"
 const type = JSON.parse(localStorage.getItem("designation")) || "";
 var Links=[]
 if (type == "student") Links = ["Dashboard", "Contact us", "Recharge Wallet"];
-else Links = ["Dashboard", "Contact us"];
+else Links = ["Contact us"];
 
 const NavLink = ({ children }) => (
   <Link

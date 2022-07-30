@@ -33,6 +33,7 @@ function About() {
         .post(`http://localhost:8000/chat/${chatID}`, user)
         .then(async (res) => {
           url.current = res.data.ChatID;
+          localStorage.setItem("TeacherID", JSON.stringify(res.data.TeacherID))
           await socket.emit("startChat", res);
           setChatLoading(true);
         });

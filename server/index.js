@@ -21,8 +21,8 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
   
-  socket.on("close_chat", () => {
-    socket.broadcast.emit("chatClosed")
+  socket.on("close_chat", (time) => {
+    socket.broadcast.emit("chatClosed",time)
     socket.broadcast.emit("videoClosed")
   })
   //<---------------------------------------------------------------->//chat
@@ -66,7 +66,7 @@ app.use(cors());
 //<---------------------------------------------------------------->
 //Add routes here
 app.use("/auth", authRouter);
-app.use("/razorpay", paymentRouter);
+app.use("/payment", paymentRouter);
 app.use("/chat", chatRouter);
 app.use("/video", videoRouter);
 app.use("/", teacher);

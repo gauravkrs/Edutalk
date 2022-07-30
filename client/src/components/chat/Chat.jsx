@@ -5,7 +5,6 @@ import axios from "axios";
 import { v4 } from "uuid";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import io from "socket.io-client";
 const socket = io.connect("http://localhost:8000");
 //<---------------------------------------------------------------->
@@ -17,10 +16,14 @@ function Chat() {
   const [Message, setMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
   const [username, setUsername] = useState("");
+  var t0=0
   useEffect(() => {
     const userID = JSON.parse(localStorage.getItem("user")) || null
     if (userID==null) {
       navigate("/");
+    }
+    else {
+      t0= performance.now()
     }
     axios.get(`http://localhost:8000/auth/${userID}`).then((response) => {
       const chatID = params.id
@@ -56,7 +59,21 @@ function Chat() {
   };
 
   useEffect(() => {
-    socket.on("chatClosed", () => navigate("/account"));
+    socket.on("chatClosed", (time) => {
+      const designation = JSON.parse(localStorage.getItem("designation"));
+      if (designation == "student") {
+        const id = JSON.parse(localStorage.getItem("user"));
+        const TeacherID = JSON.parse(localStorage.getItem("TeacherID"));
+        const request = { amount: time, type: "dec", TeacherID: TeacherID };
+        axios
+          .put(`http://localhost:8000/auth/${id}`, request)
+          .then((response) => {
+            socket.emit("close_chat", time);
+            navigate("/account");
+          });
+      }
+      navigate("/account")
+  })
     socket.on("receive_message", (data) => {
       setMessageList(data);
     });
@@ -65,8 +82,18 @@ function Chat() {
    messageRef.current.scrollIntoView();
   }, [messageList])
   const handleChatEnd = () => {
-    socket.emit("close_chat")
-    navigate("/account")
+    var t1 = performance.now();
+    var time = Math.ceil(((t1 - t0) / 10000) / 60)
+    const designation = JSON.parse(localStorage.getItem("designation"))
+    if (designation == "student") {
+      const id = JSON.parse(localStorage.getItem("user"))
+      const TeacherID = JSON.parse(localStorage.getItem("TeacherID"));
+      const request = { amount: time, type: "dec", TeacherID: TeacherID };
+      axios.put(`http://localhost:8000/auth/${id}`, request).then((response) => {
+        navigate("/account");
+      });
+    }
+    socket.emit("close_chat", time);
   }
   const left = {
     background: "green",

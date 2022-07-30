@@ -82,4 +82,23 @@ const teacher= async (req,res)=>{
     }
 }
 //<------------------------------------------------------------------------------------------------>
-module.exports = { register, chat, user, userByPhone,teacher }
+const userPut = async (req, res) => {
+    const type = req.body.type
+    if (type == "inc") {
+        var amount = req.body.amount
+        amount = +amount
+        const data = await studentModel.findOneAndUpdate({ ID: req.params.id }, { $inc: { "Wallet": amount } })
+        res.send(data)
+    } else {
+        const time = +req.body.amount
+        const ID = req.body.TeacherID
+        const teacher = await teacherModel.findOne({ ID: ID })
+        console.log(teacher)
+        const charge = +teacher.Charge
+        const amount = time*charge
+        const data = await studentModel.findOneAndUpdate({ ID: req.params.id }, { $inc: { "Wallet": -amount } })
+        res.send(data)
+    }
+}
+//<------------------------------------------------------------------------------------------------>
+module.exports = { register, chat, user, userByPhone, teacher, userPut }
